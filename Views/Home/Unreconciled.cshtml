@@ -1,0 +1,98 @@
+﻿@model Ledger.Models.ViewModels.UnreconciledViewModel
+
+@{
+    ViewBag.Title = "Unreconciled";
+    var dummy = Model.Transactions.FirstOrDefault();
+}
+
+<h2>Unreconciled</h2>
+
+<p>Current Balance: @Model.CurrentBalance</p>
+<p>Actual Balance: @Model.ActualBalance</p>
+
+<table border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Desc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.DateDue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.DatePayed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.DateReconciled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Account)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Ledger)
+        </th>
+    </tr>
+
+@foreach (var item in Model.Transactions) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Desc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateDue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatePayed)
+        </td>
+        <td>
+            <input type="checkbox" id="reconcile" data-id="@item.Id" />
+        </td>
+        <td>
+            @Model.AccountsList.Single(l => l.Value == item.Account.ToString()).Text
+        </td>
+        <td>
+            @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
+        </td>
+    </tr>
+}
+    <tr>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            <input type="text" id="desc" />
+        </td>
+        <td>
+            <input type="text" id="amount" />
+        </td>
+        <td>
+            <input type="text" id="datedue" />
+        </td>
+        <td>
+            <input type="text" id="datepayed" />
+        </td>
+        <td>
+            <input type="text" id="datereconciled" />
+        </td>
+        <td>
+            @Html.DropDownList("account", Model.AccountsList, "Select...")
+        </td>
+        <td>
+            @Html.DropDownList("ledger", Model.LedgerList, "Select...")
+        </td>
+    </tr>
+
+</table>
+
+    <input type="button" value="Submit" />
