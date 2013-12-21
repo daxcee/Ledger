@@ -1,11 +1,25 @@
 ﻿$(document).ready(function () {
+    var deleteTransaction = function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "/Home/DeleteTransaction",
+            data: { 'id': id },
+            success: function (resp) {
+                window.location.href = document.URL;
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
     var updateCurrentBalance = function (ledger) {
         $.ajax({
             type: "GET",
             url: "/Home/GetCurrentBalance",
             data: { 'ledger' : ledger },
             success: function (resp) {
-                console.log("replace: " + resp.CurrentBalance);
                 $("#currentBalance").replaceWith('<span id="currentBalance">' + resp.CurrentBalance + "</span>");
             },
             error: function (xhr) {
@@ -116,4 +130,5 @@
 
     $("#submitNew").click(submitNewTransaction);
     $(".doReconcile").click(reconcileTransaction);
+    $(".deleteTransaction").click(deleteTransaction);
 });

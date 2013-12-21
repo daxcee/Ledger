@@ -42,6 +42,9 @@
         <th>
             @Html.DisplayNameFor(model => dummy.Ledger)
         </th>
+        <th>
+            &nbsp;
+        </th>
     </tr>
 
 @foreach (var item in Model.Transactions) {
@@ -76,6 +79,9 @@
         <td>
             @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
         </td>
+        <td>
+            <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
+        </td>
     </tr>
 }
     <tr>
@@ -83,19 +89,19 @@
             &nbsp;
         </td>
         <td>
-            <input type="text" id="desc" />
+            <input type="text" id="desc" size="30" />
         </td>
         <td>
-            <input type="text" id="amount" />
+            <input type="text" id="amount" size="10" />
         </td>
         <td>
-            <input type="text" id="datedue" />
+            <input type="text" id="datedue" size="10" />
         </td>
         <td>
-            <input type="text" id="datepayed" />
+            <input type="text" id="datepayed" size="10" />
         </td>
         <td>
-            <input type="text" id="datereconciled" />
+            <input type="text" id="datereconciled" size="10" />
         </td>
         <td>
             @Html.DropDownList("account", Model.AccountsList, "Select...")
@@ -103,8 +109,11 @@
         <td>
             @Html.DropDownList("ledger", Model.LedgerList, "Select...")
         </td>
+        <td>
+            <input type="button" value="Save" id="submitNew" />
+        </td>
     </tr>
 
 </table>
 
-    <input type="button" value="Submit" id="submitNew" />
+    

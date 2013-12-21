@@ -136,5 +136,18 @@ namespace Ledger.Models
                 conn.Close();
             }
         }
+
+        public void DeleteTransaction(int id)
+        {
+            var sql = @"DELETE FROM transactions WHERE id = @id";
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                var sqlCommand = new SQLiteCommand(sql, conn);
+                sqlCommand.Parameters.AddWithValue("id", id);
+                sqlCommand.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 }

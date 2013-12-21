@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite;
 using FluentValidation;
 
@@ -7,10 +8,14 @@ namespace Ledger.Models
     public class Transaction
     {
         public long Id { get; set; }
+        [Display(Name = "Description")]
         public string Desc { get; set; }
         public decimal Amount { get; set; }
+        [Display(Name = "Date Due")]
         public DateTime? DateDue { get; set; }
+        [Display(Name = "Date Paid")]
         public DateTime? DatePayed { get; set; }
+        [Display(Name = "Date Reconciled")]
         public DateTime? DateReconciled { get; set; }
         public long Account { get; set; }
         public long Ledger { get; set; }

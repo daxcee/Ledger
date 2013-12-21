@@ -62,5 +62,14 @@ namespace Ledger.Controllers
         {
             return Json(new { CurrentBalance = _repo.GetCurrentBalance(ledger) }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public ActionResult DeleteTransaction(int id)
+        {
+            if(id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+            _repo.DeleteTransaction(id);
+            return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+        }
     }
 }
