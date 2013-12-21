@@ -110,6 +110,42 @@ namespace Ledger.Models
             }
             return list;
         }
+
+        public void CreateTransaction(Transaction transaction)
+        {
+            var sql = @"INSERT INTO transactions (desc, amount, datedue, datepayed, datereconciled, account, ledger) VALUES (
+                        @Desc, @Amount, @DateDue, @DatePayed, @DateReconciled, @Account, @Ledger)";
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                var sqlCommand = new SQLiteCommand(sql, conn);
+                sqlCommand.Parameters.AddWithValue("Desc", transaction.Desc);
+                sqlCommand.Parameters.AddWithValue("Amount", transaction.Amount);
+                sqlCommand.Parameters.AddWithValue("DateDue", transaction.DateDue);
+                sqlCommand.Parameters.AddWithValue("DatePayed", transaction.DatePayed);
+                sqlCommand.Parameters.AddWithValue("DateReconciled", transaction.DateReconciled);
+                sqlCommand.Parameters.AddWithValue("Account", transaction.Account);
+                sqlCommand.Parameters.AddWithValue("Ledger", transaction.Ledger);
+                sqlCommand.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public void MarkTransactionReconciled(int id, DateTime reconcileDate)
+        {
+            var sql = @"UPDATE transactions SET
+                        DateReconciled = @DateReconciled
+                        WHERE id = @id";
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                var sqlCommand = new SQLiteCommand(sql, conn);
+                sqlCommand.Parameters.AddWithValue("DateReconciled", reconcileDate);
+                sqlCommand.Parameters.AddWithValue("id", id);
+                sqlCommand.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 
     public class Account
@@ -137,32 +173,6 @@ namespace Ledger.Models
             l.Ledger = (long)reader["ledger"];
             l.LedgerDesc = (string)reader["ledgerdesc"];
             return l;
-        }
-    }
-
-    public class Transaction
-    {
-        public long Id { get; set; }
-        public string Desc { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime? DateDue { get; set; }
-        public DateTime? DatePayed { get; set; }
-        public DateTime? DateReconciled { get; set; }
-        public long Account { get; set; }
-        public long Ledger { get; set; }
-
-        public static Transaction Map(SQLiteDataReader reader)
-        {
-            var t = new Transaction();
-            t.Id = (long) reader["id"];
-            t.Desc = (string) reader["Desc"];
-            t.Amount = (decimal) reader["Amount"];
-            if (reader["datedue"] != DBNull.Value) t.DateDue = (DateTime) reader["datedue"];
-            if (reader["datepayed"] != DBNull.Value) t.DateDue = (DateTime) reader["datepayed"];
-            if (reader["datereconciled"] != DBNull.Value) t.DateDue = (DateTime) reader["datereconciled"];
-            t.Account = (long)reader["account"];
-            t.Ledger = (long)reader["ledger"];
-            return t;
         }
     }
 }

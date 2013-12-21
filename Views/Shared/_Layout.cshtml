@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ledger.js")"></script>
 </head>
 <body>
     <p>@Html.ActionLink("Unreconciled ING", "Unreconciled", "Home", new { id = 1}, null)</p>

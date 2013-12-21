@@ -10,6 +10,8 @@
 <p>Current Balance: @Model.CurrentBalance</p>
 <p>Actual Balance: @Model.ActualBalance</p>
 
+<p>Reconciled date: <input type="text" id="reconcileDate" /></p>
+
 <table border="1">
     <tr>
         <th>
@@ -50,13 +52,19 @@
             @Html.DisplayFor(modelItem => item.Amount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateDue)
+            @if (item.DateDue.HasValue)
+            {
+                @item.DateDue.Value.ToString("M/d/yyyy")
+            }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DatePayed)
+            @if (item.DatePayed.HasValue)
+            {
+                @item.DatePayed.Value.ToString("M/d/yyyy")
+            }
         </td>
         <td>
-            <input type="checkbox" id="reconcile" data-id="@item.Id" />
+            <input type="button" class="doReconcile" value="X" data-id="@item.Id" />
         </td>
         <td>
             @Model.AccountsList.Single(l => l.Value == item.Account.ToString()).Text
@@ -95,4 +103,4 @@
 
 </table>
 
-    <input type="button" value="Submit" />
+    <input type="button" value="Submit" id="submitNew" />
