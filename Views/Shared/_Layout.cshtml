@@ -6,6 +6,9 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    <p>@Html.ActionLink("Unreconciled ING", "Unreconciled", "Home", new { id = 1}, null)</p>
+    <p>@Html.ActionLink("Bills Due", "BillsDue", "Home")</p>    
+
     @RenderBody()
 
     @RenderSection("scripts", required: false)
