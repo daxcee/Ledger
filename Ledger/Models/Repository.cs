@@ -60,7 +60,15 @@ namespace Ledger.Models
         {
             var sql = @"INSERT INTO transactions (desc, amount, datedue, datepayed, datereconciled, account, ledger) VALUES (
                         @Desc, @Amount, @DateDue, @DatePayed, @DateReconciled, @Account, @Ledger)";
-            _connection.Execute(sql, new {transaction});
+            _connection.Execute(sql, new {
+                Desc = transaction.Desc,
+                Amount = transaction.Amount,
+                DateDue = transaction.DateDue,
+                DatePayed = transaction.DatePayed,
+                DateReconciled = transaction.DateReconciled,
+                Account = transaction.Account,
+                Ledger = transaction.Ledger
+            });
         }
 
         public void MarkTransactionReconciled(int id, DateTime reconcileDate)
@@ -99,9 +107,21 @@ namespace Ledger.Models
             _connection.Execute(sql, transaction);
         }
 
-        public List<Transaction> GetBillsDue(int id)
+        public List<Transaction> GetBillsDue()
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
+                        FROM transactions
+                        WHERE datedue IS NOT null
+                        AND datepayed IS null";
+            return _connection.Query<Transaction>(sql).ToList();
+        }
+
+        public void MarkTransactionBillPaid(int id, DateTime paidDate)
+        {
+            var sql = @"UPDATE transactions SET
+                        DatePayed = @DatePayed
+                        WHERE id = @id";
+            _connection.Execute(sql, new { id, DatePayed = paidDate });
         }
     }
 }

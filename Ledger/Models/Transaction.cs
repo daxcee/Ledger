@@ -23,6 +23,11 @@ namespace Ledger.Models
         public long Account { get; set; }
         public long Ledger { get; set; }
 
+        public bool IsABillDue()
+        {
+            return DateDue.HasValue && !DatePayed.HasValue;
+        }
+
         public static Transaction Map(SQLiteDataReader reader)
         {
             var t = new Transaction();

@@ -33,13 +33,12 @@ namespace Ledger.Controllers
             return View(model);
         } 
         
-        public ViewResult BillsDue(int id)
+        public ViewResult BillsDue()
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _repo.GetBillsDue(id);
-            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
+            model.Transactions = _repo.GetBillsDue();
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc");
             model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
-            model.Ledger = id;
             return View(model);
         }
 
@@ -60,6 +59,15 @@ namespace Ledger.Controllers
             if(id == 0 || reconcileDate == DateTime.MinValue || reconcileDate == DateTime.MaxValue)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
             _repo.MarkTransactionReconciled(id, reconcileDate);
+            return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+        }
+        
+        [HttpPost]
+        public ActionResult MarkTransactionBillPaid(int id, DateTime paidDate)
+        {
+            if (id == 0 || paidDate == DateTime.MinValue || paidDate == DateTime.MaxValue)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+            _repo.MarkTransactionBillPaid(id, paidDate);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
         }
 
@@ -92,11 +100,16 @@ namespace Ledger.Controllers
         public PartialViewResult GetRow(int id)
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = new List<Transaction> {_repo.GetTransaction(id)};
+
+            var t = _repo.GetTransaction(id);
+            model.Transactions = new List<Transaction> { t };
             model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
             model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = id;
-            return PartialView(model);
+
+            if (t.IsABillDue())
+                return PartialView("GetRowBillsDue", model);
+            return PartialView("GetRowUnreconciled", model);
         }
 
         [HttpPost]
@@ -107,12 +120,16 @@ namespace Ledger.Controllers
 
             _repo.UpdateTransaction(transaction);
 
+            var t = _repo.GetTransaction(transaction.Id);
             var model = new UnreconciledViewModel();
-            model.Transactions = new List<Transaction> {_repo.GetTransaction(transaction.Id)};
-            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", transaction.Id);
+            model.Transactions = new List<Transaction> {t};
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", t.Id);
             model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
-            model.Ledger = transaction.Id;
-            return PartialView("GetRow", model);
+            model.Ledger = t.Id;
+
+            if(t.IsABillDue())
+                return PartialView("GetRowBillsDue", model);
+            return PartialView("GetRowUnreconciled", model);
         }
     }
 }

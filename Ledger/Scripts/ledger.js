@@ -1,4 +1,28 @@
 ﻿$(document).ready(function () {
+    var billPaid = function() {
+        var id = $(this).data("id");
+        var paidDate = $("#paidDate").val();
+        if (!moment(paidDate).isValid()) {
+            alert("Please enter a valid paid date");
+            return;
+        }
+        submitbillPaidTransactionToWebService(id, paidDate);
+    };
+
+    var submitbillPaidTransactionToWebService = function (id, paidDate) {
+        $.ajax({
+            type: "POST",
+            url: "/Home/MarkTransactionBillPaid",
+            data: { 'id': id, 'paidDate': paidDate },
+            success: function (resp) {
+                $(".doPaid[data-id='" + id + "']").replaceWith("<strong>" + paidDate + "</strong>");
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
     var saveEditedTransaction = function() {
         var id = $(this).data("id");
         var trans = {};
@@ -183,7 +207,7 @@
     var submitNewTransaction = function() {
         var trans = {};
         trans.Desc = $(".newtransaction[name='desc']").val();
-        trans.Amount = $("#amount").val();
+        trans.Amount = $(".newtransaction[name='amount']").val();
         if ($(".newtransaction[name='datedue']").val() !== "")
             trans.DateDue = $(".newtransaction[name='datedue']").val();
         else
@@ -206,6 +230,7 @@
 
     $(document).on("click", "#submitNew", submitNewTransaction);
     $(document).on("click", ".doReconcile", reconcileTransaction);
+    $(document).on("click", ".doPaid", billPaid);
     $(document).on("click", ".deleteTransaction", deleteTransaction);
     $(document).on("click", ".editTransaction", editTransaction);
     $(document).on("click", ".saveEditedTransaction", saveEditedTransaction);

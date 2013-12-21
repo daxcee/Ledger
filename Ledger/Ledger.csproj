@@ -166,7 +166,13 @@
     <Content Include="Views\Home\GetEditRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\GetRow.cshtml" />
+    <Content Include="Views\Home\GetRowUnreconciled.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\BillsDue.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\GetRowBillsDue.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
