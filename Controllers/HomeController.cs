@@ -33,9 +33,14 @@ namespace Ledger.Controllers
             return View(model);
         } 
         
-        public ViewResult BillsDue(int? ledger)
+        public ViewResult BillsDue(int id)
         {
-            return View();
+            var model = new UnreconciledViewModel();
+            model.Transactions = _repo.GetBillsDue(id);
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.Ledger = id;
+            return View(model);
         }
 
         [HttpPost]
