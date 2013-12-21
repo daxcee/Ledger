@@ -1,11 +1,28 @@
 ﻿$(document).ready(function () {
+    var updateCurrentBalance = function (ledger) {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetCurrentBalance",
+            data: { 'ledger' : ledger },
+            success: function (resp) {
+                console.log("replace: " + resp.CurrentBalance);
+                $("#currentBalance").replaceWith('<span id="currentBalance">' + resp.CurrentBalance + "</span>");
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
     var submitReconcileTransactionToWebService = function (id, reconcileDate) {
         $.ajax({
             type: "POST",
             url: "/Home/MarkTransactionReconciled",
             data: { 'id' : id, 'reconcileDate' : reconcileDate },
             success: function (resp) {
+                var ledger = $("#ledgerId").val();
                 $(".doReconcile[data-id='" + id + "']").replaceWith("<strong>" + reconcileDate + "</strong>");
+                updateCurrentBalance(ledger);
             },
             error: function (xhr) {
                 alert("there was an error");
@@ -20,7 +37,6 @@
             alert("Please enter a valid reconcile date");
             return;
         }
-        console.log(reconcileDate);
         submitReconcileTransactionToWebService(id, reconcileDate);
     };
     

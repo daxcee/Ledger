@@ -7,8 +7,12 @@
 
 <h2>Unreconciled</h2>
 
-<p>Current Balance: @Model.CurrentBalance</p>
-<p>Actual Balance: @Model.ActualBalance</p>
+<input type="hidden" id="ledgerId" value="@Model.Ledger"/>
+
+<p>
+    Current Balance: <strong><span id="currentBalance">@Model.CurrentBalance</span></strong>,
+    Actual Balance: <strong>@Model.ActualBalance</strong>
+</p>
 
 <p>Reconciled date: <input type="text" id="reconcileDate" /></p>
 

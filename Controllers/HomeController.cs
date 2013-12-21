@@ -20,7 +20,7 @@ namespace Ledger.Controllers
             return View();
         }
 
-        public ViewResult Unreconciled(int? id)
+        public ViewResult Unreconciled(int id)
         {
             var model = new UnreconciledViewModel();
             model.Transactions = _repo.GetUnreconciled(id);
@@ -28,6 +28,7 @@ namespace Ledger.Controllers
             model.ActualBalance = _repo.GetActualBalance(id);
             model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
             model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.Ledger = id;
             return View(model);
         } 
         
@@ -36,6 +37,7 @@ namespace Ledger.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult CreateTransaction(Transaction transaction)
         {
             if (ModelState.IsValid)
@@ -46,12 +48,19 @@ namespace Ledger.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
         }
 
+        [HttpPost]
         public ActionResult MarkTransactionReconciled(int id, DateTime reconcileDate)
         {
             if(id == 0 || reconcileDate == DateTime.MinValue || reconcileDate == DateTime.MaxValue)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
             _repo.MarkTransactionReconciled(id, reconcileDate);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+        }
+
+        [HttpGet]
+        public JsonResult GetCurrentBalance(int ledger)
+        {
+            return Json(new { CurrentBalance = _repo.GetCurrentBalance(ledger) }, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -14,21 +14,19 @@ namespace Ledger.Models
             _connectionString = @"Data Source=" + ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
-        public List<Transaction> GetUnreconciled(int? ledger)
+        public List<Transaction> GetUnreconciled(int ledger)
         {
             var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
                         FROM transactions
                         WHERE datereconciled IS null
-                        AND datepayed IS NOT null";
-            if(ledger.HasValue)
-                sql += " AND ledger = @ledger";
+                        AND datepayed IS NOT null
+                        AND ledger = @ledger";
             var list = new List<Transaction>();
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
                 var sqlCommand = new SQLiteCommand(sql, conn);
-                if(ledger.HasValue)
-                    sqlCommand.Parameters.AddWithValue("ledger", ledger.Value);
+                sqlCommand.Parameters.AddWithValue("ledger", ledger);
                 var reader = sqlCommand.ExecuteReader();
                 while(reader.Read())
                     list.Add(Transaction.Map(reader));
@@ -37,36 +35,30 @@ namespace Ledger.Models
             return list;
         }
 
-        public decimal GetCurrentBalance(int? ledger)
+        public decimal GetCurrentBalance(int ledger)
         {
-            var sql = "SELECT SUM(amount) FROM transactions WHERE datereconciled is not null ";
-            if (ledger.HasValue)
-                sql += " AND ledger = @ledger";
+            var sql = "SELECT SUM(amount) FROM transactions WHERE datereconciled is not null AND ledger = @ledger";
             decimal returnValue;
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
                 var sqlCommand = new SQLiteCommand(sql, conn);
-                if (ledger.HasValue)
-                    sqlCommand.Parameters.AddWithValue("ledger", ledger.Value);
-                returnValue = (decimal)Math.Round((double)sqlCommand.ExecuteScalar(),2);
+                sqlCommand.Parameters.AddWithValue("ledger", ledger);
+                returnValue = (decimal) Math.Round((double) sqlCommand.ExecuteScalar(), 2);
                 conn.Close();
             }
             return returnValue;
         }
 
-        public decimal GetActualBalance(int? ledger)
+        public decimal GetActualBalance(int ledger)
         {
-            var sql = "SELECT SUM(amount) FROM transactions WHERE datepayed is not null ";
-            if (ledger.HasValue)
-                sql += " AND ledger = @ledger";
+            var sql = "SELECT SUM(amount) FROM transactions WHERE datepayed is not null AND ledger = @ledger";
             decimal returnValue;
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
                 var sqlCommand = new SQLiteCommand(sql, conn);
-                if (ledger.HasValue)
-                    sqlCommand.Parameters.AddWithValue("ledger", ledger.Value);
+                sqlCommand.Parameters.AddWithValue("ledger", ledger);
                 returnValue = (decimal)Math.Round((double)sqlCommand.ExecuteScalar(), 2);
                 conn.Close();
             }
