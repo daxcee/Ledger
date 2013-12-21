@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SQLite;
 
 namespace Ledger.Models
 {
     public class Repository
     {
-        string _connectionString;
+        readonly string _connectionString;
 
         public Repository()
         {
@@ -145,34 +143,6 @@ namespace Ledger.Models
                 sqlCommand.ExecuteNonQuery();
                 conn.Close();
             }
-        }
-    }
-
-    public class Account
-    {
-        public long Id { get; set; }
-        public string Desc { get; set; }
-
-        public static Account Map(SQLiteDataReader reader)
-        {
-            var a = new Account();
-            a.Id = (long)reader["id"];
-            a.Desc = (string)reader["desc"];
-            return a;
-        }
-    }
-
-    public class LedgerEntity
-    {
-        public long Ledger { get; set; }
-        public string LedgerDesc { get; set; }
-
-        public static LedgerEntity Map(SQLiteDataReader reader)
-        {
-            var l = new LedgerEntity();
-            l.Ledger = (long)reader["ledger"];
-            l.LedgerDesc = (string)reader["ledgerdesc"];
-            return l;
         }
     }
 }

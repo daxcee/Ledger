@@ -125,6 +125,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\LedgerEntity.cs" />
     <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\ViewModels\UnreconciledViewModel.cs" />
