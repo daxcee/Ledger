@@ -80,6 +80,7 @@
             @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
         </td>
         <td>
+            <input type="button" value="Edit" class="editTransaction" data-id="@item.Id" />
             <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
         </td>
     </tr>

@@ -12,10 +12,13 @@ namespace Ledger.Models
         public string Desc { get; set; }
         public decimal Amount { get; set; }
         [Display(Name = "Date Due")]
+        [DisplayFormat(ApplyFormatInEditMode =  true, DataFormatString = "{0:M/d/yyyy}")]
         public DateTime? DateDue { get; set; }
         [Display(Name = "Date Paid")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yyyy}")]
         public DateTime? DatePayed { get; set; }
         [Display(Name = "Date Reconciled")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yyyy}")]
         public DateTime? DateReconciled { get; set; }
         public long Account { get; set; }
         public long Ledger { get; set; }

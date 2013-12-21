@@ -1,0 +1,40 @@
+﻿@model Ledger.Models.ViewModels.UnreconciledViewModel
+
+@foreach (var item in Model.Transactions) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Desc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @if (item.DateDue.HasValue)
+            {
+                @item.DateDue.Value.ToString("M/d/yyyy")
+            }
+        </td>
+        <td>
+            @if (item.DatePayed.HasValue)
+            {
+                @item.DatePayed.Value.ToString("M/d/yyyy")
+            }
+        </td>
+        <td>
+            <input type="button" class="doReconcile" value="X" data-id="@item.Id" />
+        </td>
+        <td>
+            @Model.AccountsList.Single(l => l.Value == item.Account.ToString()).Text
+        </td>
+        <td>
+            @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
+        </td>
+        <td>
+            <input type="button" value="Edit" class="editTransaction" data-id="@item.Id" />
+            <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
+        </td>
+    </tr>
+}

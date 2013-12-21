@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using Ledger.Models;
@@ -70,6 +71,27 @@ namespace Ledger.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
             _repo.DeleteTransaction(id);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+        }
+
+        [HttpGet]
+        public PartialViewResult GetEditRow(int id)
+        {
+            var model = new TransactionEditViewModel();
+            model.Transaction = _repo.GetTransaction(id);
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", model.Transaction.Ledger);
+            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc", model.Transaction.Account);
+            return PartialView(model);
+        } 
+        
+        [HttpGet]
+        public PartialViewResult GetRow(int id)
+        {
+            var model = new UnreconciledViewModel();
+            model.Transactions = new List<Transaction> {_repo.GetTransaction(id)};
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.Ledger = id;
+            return PartialView(model);
         }
     }
 }

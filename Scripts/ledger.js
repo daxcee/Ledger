@@ -1,4 +1,41 @@
 ﻿$(document).ready(function () {
+    var saveEditedTransaction = function() {
+
+    };
+
+    var cancelEditingTransaction = function () {
+        console.log("cancel!");
+        var id = $(this).data("id");
+        var row = $(this).closest("tr");
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetRow",
+            data: { 'id': id },
+            success: function (resp) {
+                row.replaceWith(resp);
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
+    var editTransaction = function () {
+        var id = $(this).data("id");
+        var row = $(this).closest("tr");
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetEditRow",
+            data: { 'id': id },
+            success: function (resp) {
+                row.replaceWith(resp);
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
     var deleteTransaction = function() {
         var id = $(this).data("id");
         $.ajax({
@@ -128,7 +165,10 @@
         }
     };
 
-    $("#submitNew").click(submitNewTransaction);
-    $(".doReconcile").click(reconcileTransaction);
-    $(".deleteTransaction").click(deleteTransaction);
+    $(document).on("click", "#submitNew", submitNewTransaction);
+    $(document).on("click", ".doReconcile", reconcileTransaction);
+    $(document).on("click", ".deleteTransaction", deleteTransaction);
+    $(document).on("click", ".editTransaction", editTransaction);
+    $(document).on("click", ".saveEditedTransaction", saveEditedTransaction);
+    $(document).on("click", ".cancelEditingTransaction", cancelEditingTransaction);
 });

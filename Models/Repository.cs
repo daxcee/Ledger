@@ -149,5 +149,26 @@ namespace Ledger.Models
                 conn.Close();
             }
         }
+
+        public Transaction GetTransaction(int id)
+        {
+            var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
+                        FROM transactions
+                        WHERE id = @id";
+            Transaction t;
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                var sqlCommand = new SQLiteCommand(sql, conn);
+                sqlCommand.Parameters.AddWithValue("id", id);
+                var reader = sqlCommand.ExecuteReader();
+                if(!reader.HasRows)
+                    throw new Exception("something went wrong");
+                reader.Read();
+                t = Transaction.Map(reader);
+                conn.Close();
+            }
+            return t;
+        }
     }
 }
