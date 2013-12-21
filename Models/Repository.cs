@@ -25,11 +25,15 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("ledger", ledger);
-                var reader = sqlCommand.ExecuteReader();
-                while(reader.Read())
-                    list.Add(Transaction.Map(reader));
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("ledger", ledger);
+                    using (var reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            list.Add(Transaction.Map(reader));
+                    }
+                }
                 conn.Close();
             }
             return list;
@@ -42,9 +46,11 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("ledger", ledger);
-                returnValue = (decimal) Math.Round((double) sqlCommand.ExecuteScalar(), 2);
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("ledger", ledger);
+                    returnValue = (decimal) Math.Round((double) sqlCommand.ExecuteScalar(), 2);
+                }
                 conn.Close();
             }
             return returnValue;
@@ -57,9 +63,11 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("ledger", ledger);
-                returnValue = (decimal)Math.Round((double)sqlCommand.ExecuteScalar(), 2);
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("ledger", ledger);
+                    returnValue = (decimal) Math.Round((double) sqlCommand.ExecuteScalar(), 2);
+                }
                 conn.Close();
             }
             return returnValue;
@@ -74,10 +82,14 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                var reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                    list.Add(LedgerEntity.Map(reader));
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    using (var reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            list.Add(LedgerEntity.Map(reader));
+                    }
+                }
                 conn.Close();
             }
             return list;
@@ -92,10 +104,14 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                var reader = sqlCommand.ExecuteReader();
-                while (reader.Read())
-                    list.Add(Account.Map(reader));
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    using (var reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            list.Add(Account.Map(reader));
+                    }
+                }
                 conn.Close();
             }
             return list;
@@ -108,15 +124,17 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("Desc", transaction.Desc);
-                sqlCommand.Parameters.AddWithValue("Amount", transaction.Amount);
-                sqlCommand.Parameters.AddWithValue("DateDue", transaction.DateDue);
-                sqlCommand.Parameters.AddWithValue("DatePayed", transaction.DatePayed);
-                sqlCommand.Parameters.AddWithValue("DateReconciled", transaction.DateReconciled);
-                sqlCommand.Parameters.AddWithValue("Account", transaction.Account);
-                sqlCommand.Parameters.AddWithValue("Ledger", transaction.Ledger);
-                sqlCommand.ExecuteNonQuery();
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("Desc", transaction.Desc);
+                    sqlCommand.Parameters.AddWithValue("Amount", transaction.Amount);
+                    sqlCommand.Parameters.AddWithValue("DateDue", transaction.DateDue);
+                    sqlCommand.Parameters.AddWithValue("DatePayed", transaction.DatePayed);
+                    sqlCommand.Parameters.AddWithValue("DateReconciled", transaction.DateReconciled);
+                    sqlCommand.Parameters.AddWithValue("Account", transaction.Account);
+                    sqlCommand.Parameters.AddWithValue("Ledger", transaction.Ledger);
+                    sqlCommand.ExecuteNonQuery();
+                }
                 conn.Close();
             }
         }
@@ -129,10 +147,12 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("DateReconciled", reconcileDate);
-                sqlCommand.Parameters.AddWithValue("id", id);
-                sqlCommand.ExecuteNonQuery();
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("DateReconciled", reconcileDate);
+                    sqlCommand.Parameters.AddWithValue("id", id);
+                    sqlCommand.ExecuteNonQuery();
+                }
                 conn.Close();
             }
         }
@@ -143,14 +163,16 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("id", id);
-                sqlCommand.ExecuteNonQuery();
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("id", id);
+                    sqlCommand.ExecuteNonQuery();
+                }
                 conn.Close();
             }
         }
 
-        public Transaction GetTransaction(int id)
+        public Transaction GetTransaction(long id)
         {
             var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
                         FROM transactions
@@ -159,16 +181,50 @@ namespace Ledger.Models
             using (var conn = new SQLiteConnection(_connectionString))
             {
                 conn.Open();
-                var sqlCommand = new SQLiteCommand(sql, conn);
-                sqlCommand.Parameters.AddWithValue("id", id);
-                var reader = sqlCommand.ExecuteReader();
-                if(!reader.HasRows)
-                    throw new Exception("something went wrong");
-                reader.Read();
-                t = Transaction.Map(reader);
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("id", id);
+                    using (var reader = sqlCommand.ExecuteReader())
+                    {
+                        if (!reader.HasRows)
+                            throw new Exception("something went wrong");
+                        reader.Read();
+                        t = Transaction.Map(reader);
+                    }
+                }
                 conn.Close();
             }
             return t;
+        }
+
+        public void UpdateTransaction(Transaction transaction)
+        {
+            var sql = @"UPDATE transactions SET
+                            [desc] = @Desc,
+                            amount = @Amount,
+                            datedue = @DateDue,
+                            datepayed = @DatePayed,
+                            datereconciled = @DateReconciled,
+                            account = @Account,
+                            ledger = @Ledger
+                        WHERE id = @Id";
+            using (var conn = new SQLiteConnection(_connectionString))
+            {
+                conn.Open();
+                using (var sqlCommand = new SQLiteCommand(sql, conn))
+                {
+                    sqlCommand.Parameters.AddWithValue("Id", transaction.Id);
+                    sqlCommand.Parameters.AddWithValue("Desc", transaction.Desc);
+                    sqlCommand.Parameters.AddWithValue("Amount", transaction.Amount);
+                    sqlCommand.Parameters.AddWithValue("DateDue", transaction.DateDue);
+                    sqlCommand.Parameters.AddWithValue("DatePayed", transaction.DatePayed);
+                    sqlCommand.Parameters.AddWithValue("DateReconciled", transaction.DateReconciled);
+                    sqlCommand.Parameters.AddWithValue("Account", transaction.Account);
+                    sqlCommand.Parameters.AddWithValue("Ledger", transaction.Ledger);
+                    sqlCommand.ExecuteNonQuery();
+                }
+                conn.Close();
+            }
         }
     }
 }

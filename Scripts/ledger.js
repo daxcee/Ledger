@@ -1,10 +1,49 @@
 ﻿$(document).ready(function () {
     var saveEditedTransaction = function() {
+        var id = $(this).data("id");
+        var trans = {};
+        trans.Id = id;
+        trans.Desc = $("[name='Transaction.Desc'][data-id='" + id + "']").val();
+        trans.Amount = $("[name='Transaction.Amount'][data-id='" + id + "']").val();
+        if ($("[name='Transaction.DateDue'][data-id='" + id + "']").val() !== "")
+            trans.DateDue = $("[name='Transaction.DateDue'][data-id='" + id + "']").val();
+        else
+            trans.DateDue = null;
+        if ($("[name='Transaction.DatePayed'][data-id='" + id + "']").val() !== "")
+            trans.DatePayed = $("[name='Transaction.DatePayed'][data-id='" + id + "']").val();
+        else
+            trans.DatePayed = null;
+        if ($("[name='Transaction.DateReconciled'][data-id='" + id + "']").val() !== "")
+            trans.DateReconciled = $("[name='Transaction.DateReconciled'][data-id='" + id + "']").val();
+        else
+            trans.DateReconciled = null;
+        trans.Account = $("[name='Transaction.Account'][data-id='" + id + "']").val();
+        trans.Ledger = $("[name='Transaction.Ledger'][data-id='" + id + "']").val();
 
+        if (validate(trans)) {
+            submitUpdatedTransactionToWebService(trans);
+        }
     };
 
+    var submitUpdatedTransactionToWebService = function (trans) {
+        var row = $("[name='Transaction.Desc'][data-id='" + trans.Id + "']").closest("tr");
+        console.log(row);
+        $.ajax({
+            type: "POST",
+            url: "/Home/UpdateTransaction",
+            data: trans,
+            success: function (resp) {
+                console.log(resp);
+                row.replaceWith(resp);
+            },
+            error: function (xhr) {
+                alert("there was an error");
+            }
+        });
+    };
+
+
     var cancelEditingTransaction = function () {
-        console.log("cancel!");
         var id = $(this).data("id");
         var row = $(this).closest("tr");
         $.ajax({
@@ -143,22 +182,22 @@
 
     var submitNewTransaction = function() {
         var trans = {};
-        trans.Desc = $("#desc").val();
+        trans.Desc = $(".newtransaction[name='desc']").val();
         trans.Amount = $("#amount").val();
-        if ($("#datedue").val() !== "")
-            trans.DateDue = $("#datedue").val();
+        if ($(".newtransaction[name='datedue']").val() !== "")
+            trans.DateDue = $(".newtransaction[name='datedue']").val();
         else
             trans.DateDue = null;
-        if ($("#datepayed").val() !== "")
-            trans.DatePayed = $("#datepayed").val();
+        if ($(".newtransaction[name='datepayed']").val() !== "")
+            trans.DatePayed = $(".newtransaction[name='datepayed']").val();
         else
             trans.DatePayed = null;
-        if ($("#datereconciled").val() !== "")
-            trans.DateReconciled = $("#datereconciled").val();
+        if ($(".newtransaction[name='datereconciled']").val() !== "")
+            trans.DateReconciled = $(".newtransaction[name='datereconciled']").val();
         else
             trans.DateReconciled = null;
-        trans.Account = $("#account").val();
-        trans.Ledger = $("#ledger").val();
+        trans.Account = $(".newtransaction[name='account']").val();
+        trans.Ledger = $(".newtransaction[name='ledger']").val();
 
         if (validate(trans)) {
             submitNewTransactionToWebService(trans);

@@ -93,5 +93,21 @@ namespace Ledger.Controllers
             model.Ledger = id;
             return PartialView(model);
         }
+
+        [HttpPost]
+        public ActionResult UpdateTransaction(Transaction transaction)
+        {
+            if (!ModelState.IsValid || transaction.Id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+
+            _repo.UpdateTransaction(transaction);
+
+            var model = new UnreconciledViewModel();
+            model.Transactions = new List<Transaction> {_repo.GetTransaction(transaction.Id)};
+            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", transaction.Id);
+            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.Ledger = transaction.Id;
+            return PartialView("GetRow", model);
+        }
     }
 }

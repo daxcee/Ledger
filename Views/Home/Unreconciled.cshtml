@@ -90,28 +90,28 @@
             &nbsp;
         </td>
         <td>
-            <input type="text" id="desc" size="30" />
+            <input type="text" name="desc" size="30" class="newtransaction" />
         </td>
         <td>
-            <input type="text" id="amount" size="10" />
+            <input type="text" name="amount" size="10" class="newtransaction" />
         </td>
         <td>
-            <input type="text" id="datedue" size="10" />
+            <input type="text" name="datedue" size="10" class="newtransaction" />
         </td>
         <td>
-            <input type="text" id="datepayed" size="10" />
+            <input type="text" name="datepayed" size="10" class="newtransaction" />
         </td>
         <td>
-            <input type="text" id="datereconciled" size="10" />
+            <input type="text" name="datereconciled" size="10" class="newtransaction" />
         </td>
         <td>
-            @Html.DropDownList("account", Model.AccountsList, "Select...")
+            @Html.DropDownList("account", Model.AccountsList, "Select...", new { name = "account", id="", @class="newtransaction" })
         </td>
         <td>
-            @Html.DropDownList("ledger", Model.LedgerList, "Select...")
+            @Html.DropDownList("ledger", Model.LedgerList, "Select...", new { name = "account", id="", @class="newtransaction" })
         </td>
         <td>
-            <input type="button" value="Save" id="submitNew" />
+            <input type="button" value="Save" id="submitNew" class="newtransaction" />
         </td>
     </tr>
 

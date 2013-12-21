@@ -9,25 +9,25 @@
         @Html.DisplayFor(modelItem => Model.Transaction.Id)
     </td>
     <td>
-        @Html.TextBoxFor(modelItem => Model.Transaction.Desc, new { data_id = Model.Transaction.Id, size = 30})
+        @Html.TextBoxFor(modelItem => Model.Transaction.Desc, new { data_id = Model.Transaction.Id, size = 30, id =""})
     </td>
     <td>
-        @Html.TextBoxFor(modelItem => Model.Transaction.Amount, new { data_id = Model.Transaction.Id, size = 10})
+        @Html.TextBoxFor(modelItem => Model.Transaction.Amount, new { data_id = Model.Transaction.Id, size = 10, id =""})
     </td>
     <td>
-        @Html.TextBoxFor(modelItem => Model.Transaction.DateDue, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DateDue.HasValue ? Model.Transaction.DateDue.Value.ToString("M/d/yyyy") : "", size = 10})
+        @Html.TextBoxFor(modelItem => Model.Transaction.DateDue, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DateDue.HasValue ? Model.Transaction.DateDue.Value.ToString("M/d/yyyy") : "", size = 10, id =""})
     </td>
     <td>
-        @Html.TextBoxFor(modelItem => Model.Transaction.DatePayed, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DatePayed.HasValue ? Model.Transaction.DatePayed.Value.ToString("M/d/yyyy") : "", size = 10})
+        @Html.TextBoxFor(modelItem => Model.Transaction.DatePayed, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DatePayed.HasValue ? Model.Transaction.DatePayed.Value.ToString("M/d/yyyy") : "", size = 10, id =""})
     </td>
     <td>
-        @Html.TextBoxFor(modelItem => Model.Transaction.DateReconciled, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DateReconciled.HasValue ? Model.Transaction.DateReconciled.Value.ToString("M/d/yyyy") : "", size = 10})
+        @Html.TextBoxFor(modelItem => Model.Transaction.DateReconciled, new { data_id = Model.Transaction.Id, @Value = Model.Transaction.DateReconciled.HasValue ? Model.Transaction.DateReconciled.Value.ToString("M/d/yyyy") : "", size = 10, id =""})
     </td>
     <td>
-        @Html.DropDownListFor(modelItem => Model.Transaction.Account, Model.AccountsList, "Select...", new { data_id = Model.Transaction.Id})
+        @Html.DropDownListFor(modelItem => Model.Transaction.Account, Model.AccountsList, "Select...", new { data_id = Model.Transaction.Id, id =""})
     </td>
     <td>
-        @Html.DropDownListFor(modelItem => Model.Transaction.Ledger, Model.LedgerList, "Select...", new { data_id = Model.Transaction.Id})
+        @Html.DropDownListFor(modelItem => Model.Transaction.Ledger, Model.LedgerList, "Select...", new { data_id = Model.Transaction.Id, id =""})
     </td>
     <td>
         <input type="button" value="Update" class="saveEditedTransaction" data-id="@Model.Transaction.Id" />
