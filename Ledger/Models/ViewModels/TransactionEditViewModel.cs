@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Ledger.Models.Entities;
 
 namespace Ledger.Models.ViewModels
 {

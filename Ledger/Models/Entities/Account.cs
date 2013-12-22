@@ -1,6 +1,6 @@
 ﻿using System.Data.SQLite;
 
-namespace Ledger.Models
+namespace Ledger.Models.Entities
 {
     public class Account
     {

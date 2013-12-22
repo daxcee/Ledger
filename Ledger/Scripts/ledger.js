@@ -12,7 +12,7 @@
     var submitbillPaidTransactionToWebService = function (id, paidDate) {
         $.ajax({
             type: "POST",
-            url: "/Home/MarkTransactionBillPaid",
+            url: "/Ajax/MarkTransactionBillPaid",
             data: { 'id': id, 'paidDate': paidDate },
             success: function (resp) {
                 $(".doPaid[data-id='" + id + "']").replaceWith("<strong>" + paidDate + "</strong>");
@@ -54,7 +54,7 @@
         console.log(row);
         $.ajax({
             type: "POST",
-            url: "/Home/UpdateTransaction",
+            url: "/Ajax/UpdateTransaction",
             data: trans,
             success: function (resp) {
                 console.log(resp);
@@ -72,7 +72,7 @@
         var row = $(this).closest("tr");
         $.ajax({
             type: "GET",
-            url: "/Home/GetRow",
+            url: "/Ajax/GetRow",
             data: { 'id': id },
             success: function (resp) {
                 row.replaceWith(resp);
@@ -88,7 +88,7 @@
         var row = $(this).closest("tr");
         $.ajax({
             type: "GET",
-            url: "/Home/GetEditRow",
+            url: "/Ajax/GetEditRow",
             data: { 'id': id },
             success: function (resp) {
                 row.replaceWith(resp);
@@ -103,7 +103,7 @@
         var id = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: "/Home/DeleteTransaction",
+            url: "/Ajax/DeleteTransaction",
             data: { 'id': id },
             success: function (resp) {
                 window.location.href = document.URL;
@@ -117,7 +117,7 @@
     var updateCurrentBalance = function (ledger) {
         $.ajax({
             type: "GET",
-            url: "/Home/GetCurrentBalance",
+            url: "/Ajax/GetCurrentBalance",
             data: { 'ledger' : ledger },
             success: function (resp) {
                 $("#currentBalance").replaceWith('<span id="currentBalance">' + resp.CurrentBalance + "</span>");
@@ -131,7 +131,7 @@
     var submitReconcileTransactionToWebService = function (id, reconcileDate) {
         $.ajax({
             type: "POST",
-            url: "/Home/MarkTransactionReconciled",
+            url: "/Ajax/MarkTransactionReconciled",
             data: { 'id' : id, 'reconcileDate' : reconcileDate },
             success: function (resp) {
                 var ledger = $("#ledgerId").val();
@@ -193,7 +193,7 @@
     var submitNewTransactionToWebService = function (trans) {
         $.ajax({
             type: "POST",
-            url: "/Home/CreateTransaction",
+            url: "/Ajax/CreateTransaction",
             data: trans,
             success: function(resp) {
                 window.location.href = document.URL;

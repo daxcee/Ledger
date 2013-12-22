@@ -126,14 +126,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\LedgerEntity.cs" />
-    <Compile Include="Models\Repository.cs" />
-    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\Entities\Account.cs" />
+    <Compile Include="Models\Entities\LedgerEntity.cs" />
+    <Compile Include="Models\Repositories\LedgerRepository.cs" />
+    <Compile Include="Models\Repositories\TransactionRepository.cs" />
+    <Compile Include="Models\Entities\Transaction.cs" />
+    <Compile Include="Models\ViewModels\IndexViewModel.cs" />
     <Compile Include="Models\ViewModels\TransactionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\UnreconciledViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -163,16 +166,16 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\GetEditRow.cshtml" />
+    <Content Include="Views\Ajax\GetEditRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\GetRowUnreconciled.cshtml" />
+    <Content Include="Views\Ajax\GetRowUnreconciled.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\BillsDue.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\GetRowBillsDue.cshtml" />
+    <Content Include="Views\Ajax\GetRowBillsDue.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

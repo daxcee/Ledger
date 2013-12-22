@@ -5,14 +5,15 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using Dapper;
+using Ledger.Models.Entities;
 
-namespace Ledger.Models
+namespace Ledger.Models.Repositories
 {
-    public class Repository
+    public class TransactionRepository
     {
         readonly IDbConnection _connection;
 
-        public Repository()
+        public TransactionRepository()
         {
             var connectionString = @"Data Source=" + ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             _connection = new SQLiteConnection(connectionString);

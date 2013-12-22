@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.SQLite;
 using FluentValidation;
 
-namespace Ledger.Models
+namespace Ledger.Models.Entities
 {
     public class Transaction
     {

@@ -1,6 +1,14 @@
-﻿@{
+﻿@model Ledger.Models.ViewModels.IndexViewModel
+
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Unreconciled Transactions</h2>
 
+<ul>
+@foreach (var ledger in Model.Ledgers)
+{
+    <li>@Html.ActionLink(ledger.LedgerDesc, "Unreconciled", new { id = ledger.Ledger})</li>
+}
+</ul>

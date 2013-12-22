@@ -9,8 +9,7 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/ledger.js")"></script>
 </head>
 <body>
-    <p>@Html.ActionLink("Unreconciled ING", "Unreconciled", "Home", new { id = 1}, null)</p>
-    <p>@Html.ActionLink("Bills Due", "BillsDue", "Home")</p>    
+    <p>@Html.ActionLink("Home", "Index", "Home")</p>
 
     @RenderBody()
 
