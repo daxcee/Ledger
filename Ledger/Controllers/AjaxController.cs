@@ -133,5 +133,18 @@ namespace Ledger.Controllers
                 return PartialView("GetRowBillsDue", model);
             return PartialView("GetRowUnreconciled", model);
         }
+
+        [HttpPost]
+        public ActionResult UpdateLedger(int ledger, string ledgerDesc)
+        {
+            var ledgerIn = new LedgerEntity {Ledger = ledger, LedgerDesc = ledgerDesc};
+            if (!ModelState.IsValid || ledgerIn.Ledger <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+
+            _ledgerRepo.UpdateLedger(ledgerIn);
+
+            var model = _ledgerRepo.GetLedger(ledgerIn.Ledger);
+            return PartialView("GetLedgerRow", model);
+        }
     }
 }

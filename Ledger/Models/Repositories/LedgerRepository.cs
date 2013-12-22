@@ -28,9 +28,14 @@ namespace Ledger.Models.Repositories
             _connection.Execute("INSERT INTO ledgers (ledgerdesc) VALUES (@LedgerDesc)", new {ledger.LedgerDesc});
         }
 
-        public LedgerEntity GetLedger(int id)
+        public LedgerEntity GetLedger(long id)
         {
             return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc FROM ledgers WHERE ledger = @id", new { id }).FirstOrDefault();
+        }
+
+        public void UpdateLedger(LedgerEntity ledger)
+        {
+            _connection.Execute("UPDATE ledgers SET ledgerdesc = @LedgerDesc WHERE ledger = @Ledger", new { ledger.Ledger, ledger.LedgerDesc });
         }
     }
 }

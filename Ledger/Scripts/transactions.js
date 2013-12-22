@@ -51,13 +51,11 @@
 
     var submitUpdatedTransactionToWebService = function (trans) {
         var row = $("[name='Transaction.Desc'][data-id='" + trans.Id + "']").closest("tr");
-        console.log(row);
         $.ajax({
             type: "POST",
             url: "/Ajax/UpdateTransaction",
             data: trans,
             success: function (resp) {
-                console.log(resp);
                 row.replaceWith(resp);
             },
             error: function (xhr) {
