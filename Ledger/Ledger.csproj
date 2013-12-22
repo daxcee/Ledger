@@ -126,8 +126,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LedgerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -137,6 +139,7 @@
     <Compile Include="Models\Repositories\TransactionRepository.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
     <Compile Include="Models\ViewModels\IndexViewModel.cs" />
+    <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
     <Compile Include="Models\ViewModels\TransactionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\UnreconciledViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,7 +147,8 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\ledger.js" />
+    <Content Include="Scripts\transactions.js" />
+    <Content Include="Scripts\ledgers.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -176,6 +180,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Ajax\GetRowBillsDue.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ledger\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ajax\GetLedgerEditRow.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ajax\GetLedgerRow.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

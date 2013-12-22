@@ -1,18 +1,21 @@
-﻿using System.Data.SQLite;
+﻿using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 
 namespace Ledger.Models.Entities
 {
     public class LedgerEntity
     {
+        [Display(Name = "ID")]
         public long Ledger { get; set; }
+        [Display(Name = "Description")]
         public string LedgerDesc { get; set; }
+    }
 
-        public static LedgerEntity Map(SQLiteDataReader reader)
+    public class LedgerEntityValidation : AbstractValidator<LedgerEntity>
+    {
+        public LedgerEntityValidation()
         {
-            var l = new LedgerEntity();
-            l.Ledger = (long)reader["ledger"];
-            l.LedgerDesc = (string)reader["ledgerdesc"];
-            return l;
+            RuleFor(x => x.LedgerDesc).NotEmpty();
         }
     }
 }

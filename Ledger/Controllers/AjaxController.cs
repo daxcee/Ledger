@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
-using Ledger.Models;
 using Ledger.Models.Entities;
 using Ledger.Models.Repositories;
 using Ledger.Models.ViewModels;
@@ -11,11 +10,13 @@ namespace Ledger.Controllers
 {
     public class AjaxController : Controller
     {
-        readonly TransactionRepository _repo;
+        readonly TransactionRepository _transRepo;
+        readonly LedgerRepository _ledgerRepo;
 
         public AjaxController()
         {
-            _repo = new TransactionRepository();
+            _transRepo = new TransactionRepository();
+            _ledgerRepo = new LedgerRepository();
         }
 
         [HttpPost]
@@ -23,7 +24,18 @@ namespace Ledger.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repo.CreateTransaction(transaction);
+                _transRepo.CreateTransaction(transaction);
+                return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+        }
+        
+        [HttpPost]
+        public ActionResult CreateLedger(LedgerEntity ledger)
+        {
+            if (ModelState.IsValid)
+            {
+                _ledgerRepo.CreateLedger(ledger);
                 return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
             }
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
@@ -34,7 +46,7 @@ namespace Ledger.Controllers
         {
             if (id == 0 || reconcileDate == DateTime.MinValue || reconcileDate == DateTime.MaxValue)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
-            _repo.MarkTransactionReconciled(id, reconcileDate);
+            _transRepo.MarkTransactionReconciled(id, reconcileDate);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
         }
 
@@ -43,14 +55,14 @@ namespace Ledger.Controllers
         {
             if (id == 0 || paidDate == DateTime.MinValue || paidDate == DateTime.MaxValue)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
-            _repo.MarkTransactionBillPaid(id, paidDate);
+            _transRepo.MarkTransactionBillPaid(id, paidDate);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
         }
 
         [HttpGet]
         public JsonResult GetCurrentBalance(int ledger)
         {
-            return Json(new { CurrentBalance = _repo.GetCurrentBalance(ledger) }, JsonRequestBehavior.AllowGet);
+            return Json(new { CurrentBalance = _transRepo.GetCurrentBalance(ledger) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -58,7 +70,7 @@ namespace Ledger.Controllers
         {
             if (id <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
-            _repo.DeleteTransaction(id);
+            _transRepo.DeleteTransaction(id);
             return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
         }
 
@@ -66,9 +78,16 @@ namespace Ledger.Controllers
         public PartialViewResult GetEditRow(int id)
         {
             var model = new TransactionEditViewModel();
-            model.Transaction = _repo.GetTransaction(id);
-            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", model.Transaction.Ledger);
-            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc", model.Transaction.Account);
+            model.Transaction = _transRepo.GetTransaction(id);
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", model.Transaction.Ledger);
+            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc", model.Transaction.Account);
+            return PartialView(model);
+        } 
+        
+        [HttpGet]
+        public PartialViewResult GetLedgerEditRow(int id)
+        {
+            var model = _ledgerRepo.GetLedger(id);
             return PartialView(model);
         }
 
@@ -77,15 +96,22 @@ namespace Ledger.Controllers
         {
             var model = new UnreconciledViewModel();
 
-            var t = _repo.GetTransaction(id);
+            var t = _transRepo.GetTransaction(id);
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
-            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = id;
 
             if (t.IsABillDue())
                 return PartialView("GetRowBillsDue", model);
             return PartialView("GetRowUnreconciled", model);
+        }
+        
+        [HttpGet]
+        public PartialViewResult GetLedgerRow(int id)
+        {
+            var model = _ledgerRepo.GetLedger(id);
+            return PartialView(model);
         }
 
         [HttpPost]
@@ -94,13 +120,13 @@ namespace Ledger.Controllers
             if (!ModelState.IsValid || transaction.Id <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
 
-            _repo.UpdateTransaction(transaction);
+            _transRepo.UpdateTransaction(transaction);
 
-            var t = _repo.GetTransaction(transaction.Id);
+            var t = _transRepo.GetTransaction(transaction.Id);
             var model = new UnreconciledViewModel();
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_repo.GetAllLedgers(), "Ledger", "LedgerDesc", t.Id);
-            model.AccountsList = new SelectList(_repo.GetAllAccounts(), "Id", "Desc");
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", t.Id);
+            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = t.Id;
 
             if (t.IsABillDue())

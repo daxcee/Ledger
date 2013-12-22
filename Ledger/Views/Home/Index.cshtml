@@ -4,13 +4,19 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Unreconciled Transactions</h2>
+<h2>Transactions</h2>
 
 <ul>
     @foreach (var ledger in Model.Ledgers)
     {
         <li>@Html.ActionLink(ledger.LedgerDesc, "Unreconciled", new { id = ledger.Ledger})</li>
     }
+    <li>@Html.ActionLink("Bills Due", "BillsDue")</li>
 </ul>
 
-<p>@Html.ActionLink("Bills Due", "BillsDue")</p>
+<h2>Admin</h2>
+
+<ul>
+    <li>@Html.ActionLink("Manage Ledgers", "Index", "Ledger")</li>
+    <li>@Html.ActionLink("Manage Accounts", "Index", "Account")</li>
+</ul>

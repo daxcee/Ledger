@@ -22,5 +22,15 @@ namespace Ledger.Models.Repositories
         {
             return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc FROM ledgers ORDER BY ledgerdesc").ToList();
         }
+
+        public void CreateLedger(LedgerEntity ledger)
+        {
+            _connection.Execute("INSERT INTO ledgers (ledgerdesc) VALUES (@LedgerDesc)", new {ledger.LedgerDesc});
+        }
+
+        public LedgerEntity GetLedger(int id)
+        {
+            return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc FROM ledgers WHERE ledger = @id", new { id }).FirstOrDefault();
+        }
     }
 }

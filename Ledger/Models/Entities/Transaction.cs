@@ -27,20 +27,6 @@ namespace Ledger.Models.Entities
         {
             return DateDue.HasValue && !DatePayed.HasValue;
         }
-
-        public static Transaction Map(SQLiteDataReader reader)
-        {
-            var t = new Transaction();
-            t.Id = (long) reader["id"];
-            t.Desc = (string) reader["Desc"];
-            t.Amount = (decimal) reader["Amount"];
-            if (reader["datedue"] != DBNull.Value) t.DateDue = (DateTime) reader["datedue"];
-            if (reader["datepayed"] != DBNull.Value) t.DatePayed = (DateTime) reader["datepayed"];
-            if (reader["datereconciled"] != DBNull.Value) t.DateReconciled = (DateTime) reader["datereconciled"];
-            t.Account = (long)reader["account"];
-            t.Ledger = (long)reader["ledger"];
-            return t;
-        }
     }
 
     public class TransactionValidation : AbstractValidator<Transaction>

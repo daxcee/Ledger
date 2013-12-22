@@ -1,0 +1,48 @@
+﻿@model Ledger.Models.ViewModels.LedgersViewModel
+
+@{
+    ViewBag.Title = "Index";
+    var dummy = Model.Ledgers.FirstOrDefault();
+}
+
+<h2>Ledgers</h2>
+
+<table border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Ledger)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.LedgerDesc)
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+    
+    @foreach(var ledger in Model.Ledgers)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(i => ledger.Ledger)
+            </td>
+            <td>
+                @Html.DisplayFor(i => ledger.LedgerDesc)
+            </td>
+            <td>
+                <input type="button" class="editLedger" data-id="@ledger.Ledger" value="Edit" />
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            <input type="text" name="LedgerDesc" class="newLedger" />
+        </td>
+        <td>
+            <input type="button" value="Submit" id="submitNewLedger" />
+        </td>
+    </tr>
+</table>

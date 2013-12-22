@@ -1,0 +1,17 @@
+﻿@model Ledger.Models.Entities.LedgerEntity
+
+@{
+    Layout = null;
+}
+
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Ledger)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.LedgerDesc)
+    </td>
+    <td>
+        <input type="button" class="editLedger" data-id="@Model.Ledger" value="Edit" />
+    </td>
+</tr>
