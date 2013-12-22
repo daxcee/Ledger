@@ -1,0 +1,23 @@
+﻿@model Ledger.Models.Entities.Account
+
+@{
+    Layout = null;
+}
+
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Desc)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Category)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Comment)
+    </td>
+    <td>
+        <input type="button" class="editAccount" data-id="@Model.Id" value="Edit" />
+    </td>
+</tr>

@@ -1,18 +1,10 @@
-﻿using System.Data.SQLite;
-
-namespace Ledger.Models.Entities
+﻿namespace Ledger.Models.Entities
 {
     public class Account
     {
         public long Id { get; set; }
         public string Desc { get; set; }
-
-        public static Account Map(SQLiteDataReader reader)
-        {
-            var a = new Account();
-            a.Id = (long)reader["id"];
-            a.Desc = (string)reader["desc"];
-            return a;
-        }
+        public string Category { get; set; }
+        public string Comment { get; set; }
     }
 }

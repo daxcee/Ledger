@@ -1,0 +1,24 @@
+﻿@model Ledger.Models.Entities.Account
+
+@{
+    Layout = null;
+}
+
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => Model.Id)
+    </td>
+    <td>
+        @Html.TextBoxFor(modelItem => Model.Desc, new { data_id = Model.Id, size = 20, id =""})
+    </td>
+    <td>
+        @Html.TextBoxFor(modelItem => Model.Category, new { data_id = Model.Id, size = 20, id =""})
+    </td>
+    <td>
+        @Html.TextBoxFor(modelItem => Model.Comment, new { data_id = Model.Id, size = 50, id =""})
+    </td>
+    <td>
+        <input type="button" class="saveEditedAccount" data-id="@Model.Id" value="Save" />
+        <input type="button" class="cancelEditingAccount" data-id="@Model.Id" value="Cancel" />
+    </td>
+</tr>

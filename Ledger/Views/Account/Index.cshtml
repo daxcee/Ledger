@@ -1,0 +1,66 @@
+﻿@model Ledger.Models.ViewModels.AccountsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    var dummy = Model.Accounts.FirstOrDefault();
+}
+
+<h2>Accounts</h2>
+
+<table border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Desc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => dummy.Comment)
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+    
+    @foreach(var acct in Model.Accounts)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(i => acct.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(i => acct.Desc)
+            </td>
+            <td>
+                @Html.DisplayFor(i => acct.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(i => acct.Comment)
+            </td>
+            <td>
+                <input type="button" class="editAccount" data-id="@acct.Id" value="Edit" />
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            <input type="text" name="Desc" class="newAccount" />
+        </td>
+        <td>
+            <input type="text" name="Category" class="newAccount" />
+        </td>
+        <td>
+            <input type="text" name="Comment" class="newAccount" size="50" />
+        </td>
+        <td>
+            <input type="button" value="Submit" id="submitNewAccount" />
+        </td>
+    </tr>
+</table>

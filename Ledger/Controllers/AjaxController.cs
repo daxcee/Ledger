@@ -12,11 +12,13 @@ namespace Ledger.Controllers
     {
         readonly TransactionRepository _transRepo;
         readonly LedgerRepository _ledgerRepo;
+        readonly AccountRepository _acctRepo;
 
         public AjaxController()
         {
             _transRepo = new TransactionRepository();
             _ledgerRepo = new LedgerRepository();
+            _acctRepo = new AccountRepository();
         }
 
         [HttpPost]
@@ -36,6 +38,17 @@ namespace Ledger.Controllers
             if (ModelState.IsValid)
             {
                 _ledgerRepo.CreateLedger(ledger);
+                return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+        }
+
+        [HttpPost]
+        public ActionResult CreateAccount(Account acct)
+        {
+            if (ModelState.IsValid)
+            {
+                _acctRepo.CreateAccount(acct);
                 return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
             }
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
@@ -90,6 +103,13 @@ namespace Ledger.Controllers
             var model = _ledgerRepo.GetLedger(id);
             return PartialView(model);
         }
+        
+        [HttpGet]
+        public PartialViewResult GetAccountEditRow(int id)
+        {
+            var model = _acctRepo.GetAccount(id);
+            return PartialView(model);
+        }
 
         [HttpGet]
         public PartialViewResult GetRow(int id)
@@ -111,6 +131,13 @@ namespace Ledger.Controllers
         public PartialViewResult GetLedgerRow(int id)
         {
             var model = _ledgerRepo.GetLedger(id);
+            return PartialView(model);
+        }
+
+        [HttpGet]
+        public PartialViewResult GetAccountRow(int id)
+        {
+            var model = _acctRepo.GetAccount(id);
             return PartialView(model);
         }
 
@@ -145,6 +172,18 @@ namespace Ledger.Controllers
 
             var model = _ledgerRepo.GetLedger(ledgerIn.Ledger);
             return PartialView("GetLedgerRow", model);
+        }
+        
+        [HttpPost]
+        public ActionResult UpdateAccount(Account account)
+        {
+            if (!ModelState.IsValid || account.Id <= 0)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
+
+            _acctRepo.UpdateAccount(account);
+
+            var model = _acctRepo.GetAccount(account.Id);
+            return PartialView("GetAccountRow", model);
         }
     }
 }

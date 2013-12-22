@@ -135,9 +135,11 @@
     </Compile>
     <Compile Include="Models\Entities\Account.cs" />
     <Compile Include="Models\Entities\LedgerEntity.cs" />
+    <Compile Include="Models\Repositories\AccountRepository.cs" />
     <Compile Include="Models\Repositories\LedgerRepository.cs" />
     <Compile Include="Models\Repositories\TransactionRepository.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
+    <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
     <Compile Include="Models\ViewModels\IndexViewModel.cs" />
     <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
     <Compile Include="Models\ViewModels\TransactionEditViewModel.cs" />
@@ -147,6 +149,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\accounts.js" />
     <Content Include="Scripts\transactions.js" />
     <Content Include="Scripts\ledgers.js" />
     <Content Include="x64\SQLite.Interop.dll">
@@ -189,6 +192,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Ajax\GetLedgerRow.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ajax\GetAccountEditRow.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ajax\GetAccountRow.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
