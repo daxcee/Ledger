@@ -1,5 +1,10 @@
 ﻿@model Ledger.Models.ViewModels.LedgersViewModel
 
+@section scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ledgers.js")"></script>
+}
+
 @{
     ViewBag.Title = "Index";
     var dummy = Model.Ledgers.FirstOrDefault();

@@ -1,5 +1,9 @@
 ﻿@model Ledger.Models.ViewModels.UnreconciledViewModel
 
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/transactions.js")"></script>
+}
+
 @{
     ViewBag.Title = "Unreconciled";
     var dummy = Model.Transactions.FirstOrDefault();

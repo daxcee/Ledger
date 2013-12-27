@@ -1,0 +1,30 @@
+﻿@model Ledger.Models.ViewModels.NavViewModel
+
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Ledger</a>
+</div>
+<div class="collapse navbar-collapse">
+    <ul class="nav navbar-nav">
+        <li@(Model.SelectedNav == "Index" ? " class=active" : "")>@Html.ActionLink("Home", "Index", "Home")</li>
+        @foreach (var ledger in Model.Ledgers)
+        {
+            <li@(Model.SelectedNav == ledger.LedgerDesc ? " class=active" : "")>@Html.ActionLink(ledger.LedgerDesc, "Unreconciled", new { id = ledger.Ledger})</li>
+        }
+        <li@(Model.SelectedNav == "BillsDue" ? " class=active" : "")>@Html.ActionLink("Bills Due", "BillsDue")</li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Manage Ledgers", "Index", "Ledger")</li>
+                <li>@Html.ActionLink("Manage Accounts", "Index", "Account")</li>
+            </ul>
+        </li>
+    </ul>
+</div><!--/.nav-collapse -->

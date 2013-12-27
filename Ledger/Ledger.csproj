@@ -140,7 +140,7 @@
     <Compile Include="Models\Repositories\TransactionRepository.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
-    <Compile Include="Models\ViewModels\IndexViewModel.cs" />
+    <Compile Include="Models\ViewModels\NavViewModel.cs" />
     <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
     <Compile Include="Models\ViewModels\TransactionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\UnreconciledViewModel.cs" />
@@ -201,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Ajax\GetAccountRow.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Nav.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

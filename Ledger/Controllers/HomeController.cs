@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Ledger.Models.Repositories;
 using Ledger.Models.ViewModels;
 
@@ -17,9 +18,24 @@ namespace Ledger.Controllers
 
         public ViewResult Index()
         {
-            var model = new IndexViewModel();
+            return View();
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult Nav()
+        {
+            var model = new NavViewModel();
             model.Ledgers = _ledgerRepo.GetAllLedgers();
-            return View(model);
+            var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
+            if (action == "Unreconciled")
+            {
+                var id = (string)RouteData.Values["id"];
+                model.SelectedNav = model.Ledgers.Single(l => l.Ledger.ToString() == id).LedgerDesc;
+            }
+            else
+                model.SelectedNav = action;
+
+            return PartialView(model);
         }
 
         public ViewResult Unreconciled(int id)

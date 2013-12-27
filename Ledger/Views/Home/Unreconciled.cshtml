@@ -1,5 +1,9 @@
 ﻿@model Ledger.Models.ViewModels.UnreconciledViewModel
 
+@section scripts {
+    <script type="text/javascript" src="@Url.Content("~/Scripts/transactions.js")"></script>
+}
+
 @{
     ViewBag.Title = "Unreconciled";
     var dummy = Model.Transactions.FirstOrDefault();
@@ -16,7 +20,8 @@
 
 <p>Reconciled date: <input type="text" id="reconcileDate" /></p>
 
-<table border="1">
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover table-condensed transaction-grid">
     <tr>
         <th>
             @Html.DisplayNameFor(model => dummy.Id)
@@ -116,5 +121,5 @@
     </tr>
 
 </table>
-
+</div>
     

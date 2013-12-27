@@ -2,19 +2,28 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/ledgers.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/transactions.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/accounts.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 </head>
-<body>
-    <p>@Html.ActionLink("Home", "Index", "Home")</p>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">        
+            <div class="container">
+                @Html.Action("Nav","Home")
+            </div>
+        </div>
 
-    @RenderBody()
+        <div class="container">
+            <div class="starter-template">
+                @RenderBody()
+            </div>
+        </div>
 
-    @RenderSection("scripts", required: false)
-</body>
+        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        @RenderSection("scripts", required: false)
+    </body>
 </html>
