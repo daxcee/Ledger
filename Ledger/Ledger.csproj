@@ -149,6 +149,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="schema.sql" />
     <Content Include="Scripts\accounts.js" />
     <Content Include="Scripts\transactions.js" />
     <Content Include="Scripts\ledgers.js" />

@@ -1,0 +1,23 @@
+﻿CREATE TABLE [accounts] (
+[id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+[desc] VARCHAR(50)  NOT NULL,
+[category] VARCHAR(50)  NOT NULL,
+[comment] TEXT  NULL
+);
+
+CREATE TABLE [ledgers] (
+[ledger] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+[ledgerdesc] VARCHAR(50)  NOT NULL,
+[friendlyname] VARCHAR(255)  NULL
+);
+
+CREATE TABLE [transactions] (
+[id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+[desc] VARCHAR(50)  NOT NULL,
+[amount] NUMERIC  NOT NULL,
+[datedue] DATE  NULL,
+[datepayed] DATE  NULL,
+[datereconciled] DATE  NULL,
+[account] INTEGER  NOT NULL,
+[ledger] INTEGER  NOT NULL
+);

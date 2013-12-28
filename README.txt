@@ -50,11 +50,9 @@ What's the deal with the difference? There's lots of situations where my bank do
 
 * I used to have some good reports in Access, but I never really got around to that in the web versions. Also, I started using Mint.com which is a great tool to help you categorize transactions and do budgeting. I want to add some reports back.
 
-* I need to create SQL scripts so you can create your own SQLite file. If you look at the repositories, it's not terribly complicated: 3 tables with a few fields each.
+* It would be great if there was a more automatic/hands-off way to create the SQLite database.
 
-* It's ugly. Who really cares. Well, if you have to look at this every day, it should be easier on the eyes.
-
-* I'd like to show current/actual balances on the Home Index next to each ledger name.
+* It's still a little ugly. I switched it to use Twitter Bootstrap though, so that helps a bit.
 
 --- Credits ---
 
