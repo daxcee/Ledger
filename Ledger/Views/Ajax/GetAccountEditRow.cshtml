@@ -18,7 +18,11 @@
         @Html.TextBoxFor(modelItem => Model.Comment, new { data_id = Model.Id, size = 50, id =""})
     </td>
     <td>
-        <input type="button" class="saveEditedAccount" data-id="@Model.Id" value="Save" />
-        <input type="button" class="cancelEditingAccount" data-id="@Model.Id" value="Cancel" />
+        <button type="button" class="btn btn-default btn-sm saveEditedAccount" data-id="@Model.Id">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+        </button>
+        <button type="button" class="btn btn-default btn-sm cancelEditingAccount" data-id="@Model.Id">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+        </button>
     </td>
 </tr>

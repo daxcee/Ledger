@@ -18,6 +18,8 @@
         @Html.DisplayFor(modelItem => Model.Comment)
     </td>
     <td>
-        <input type="button" class="editAccount" data-id="@Model.Id" value="Edit" />
+        <button type="button" class="btn btn-default btn-sm editAccount" data-id="@Model.Id">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+        </button>
     </td>
 </tr>

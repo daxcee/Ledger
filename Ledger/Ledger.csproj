@@ -147,6 +147,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\logo.png" />
+    <Content Include="Content\logo25.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="schema.sql" />
@@ -204,7 +206,7 @@
     <Content Include="Views\Ajax\GetAccountRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Nav.cshtml" />
+    <Content Include="Views\Shared\Nav.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

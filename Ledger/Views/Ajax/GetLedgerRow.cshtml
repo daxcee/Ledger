@@ -12,6 +12,8 @@
         @Html.DisplayFor(modelItem => Model.LedgerDesc)
     </td>
     <td>
-        <input type="button" class="editLedger" data-id="@Model.Ledger" value="Edit" />
+        <button type="button" class="btn btn-default btn-sm editLedger" data-id="@Model.Ledger">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+        </button>
     </td>
 </tr>

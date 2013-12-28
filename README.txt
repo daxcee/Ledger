@@ -54,6 +54,12 @@ What's the deal with the difference? There's lots of situations where my bank do
 
 * It's still a little ugly. I switched it to use Twitter Bootstrap though, so that helps a bit.
 
+* Make this README better, shorter, and switch to Markdown.
+
+* Need a confirmation for deleting transactions
+
+* There's a bit too much repetition of markup to deal with the Ajax stuff: consolidate into partial views or something
+
 --- Credits ---
 
 "Ledger" logo found via creativecommons.org and modified from the original: http://commons.wikimedia.org/wiki/File:The_Star-Ledger_logo.png

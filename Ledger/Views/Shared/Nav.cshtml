@@ -14,16 +14,16 @@
         <li@(Model.SelectedNav == "Index" ? " class=active" : "")>@Html.ActionLink("Home", "Index", "Home")</li>
         @foreach (var ledger in Model.Ledgers)
         {
-            <li@(Model.SelectedNav == ledger.LedgerDesc ? " class=active" : "")>@Html.ActionLink(ledger.LedgerDesc, "Unreconciled", new { id = ledger.Ledger})</li>
+            <li@(Model.SelectedNav == ledger.LedgerDesc ? " class=active" : "")>@Html.ActionLink(ledger.LedgerDesc, "Unreconciled", "Home", new { id = ledger.Ledger}, null)</li>
         }
-        <li@(Model.SelectedNav == "BillsDue" ? " class=active" : "")>@Html.ActionLink("Bills Due", "BillsDue")</li>
+        <li@(Model.SelectedNav == "BillsDue" ? " class=active" : "")>@Html.ActionLink("Bills Due", "BillsDue", "Home")</li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown@(Model.SelectedNav == "Admin" ? " active" : "")">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("Manage Ledgers", "Index", "Ledger")</li>
-                <li>@Html.ActionLink("Manage Accounts", "Index", "Account")</li>
+                <li>@Html.ActionLink("Ledgers", "Index", "Ledger")</li>
+                <li>@Html.ActionLink("Accounts", "Index", "Account")</li>
             </ul>
         </li>
     </ul>

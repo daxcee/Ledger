@@ -36,7 +36,9 @@
                 @Html.DisplayFor(i => ledger.LedgerDesc)
             </td>
             <td>
-                <input type="button" class="editLedger" data-id="@ledger.Ledger" value="Edit" />
+                <button type="button" class="btn btn-default btn-sm editLedger" data-id="@ledger.Ledger">
+                    <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
             </td>
         </tr>
     }
@@ -48,7 +50,9 @@
             <input type="text" name="LedgerDesc" class="newLedger" />
         </td>
         <td>
-            <input type="button" value="Submit" id="submitNewLedger" />
+            <button type="button" id="submitNewLedger" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Submit
+            </button>
         </td>
     </tr>
 </table>

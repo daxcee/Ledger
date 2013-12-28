@@ -48,7 +48,9 @@
                 @Html.DisplayFor(i => acct.Comment)
             </td>
             <td>
-                <input type="button" class="editAccount" data-id="@acct.Id" value="Edit" />
+                <button type="button" class="btn btn-default btn-sm editAccount" data-id="@acct.Id">
+                    <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
             </td>
         </tr>
     }
@@ -66,7 +68,9 @@
             <input type="text" name="Comment" class="newAccount" size="50" />
         </td>
         <td>
-            <input type="button" value="Submit" id="submitNewAccount" />
+            <button type="button" id="submitNewAccount" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Submit
+            </button>
         </td>
     </tr>
 </table>

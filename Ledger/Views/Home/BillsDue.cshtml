@@ -63,7 +63,9 @@
                 }
             </td>
             <td>
-                <input type="button" class="doPaid" value="X" data-id="@item.Id" />
+                <button type="button" class="btn btn-default btn-sm doPaid" data-id="@item.Id">
+                  <span class="glyphicon glyphicon-usd"></span> Paid
+                </button>
             </td>
             <td>
                 @if (item.DateReconciled.HasValue)
@@ -78,8 +80,12 @@
                 @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
             </td>
             <td>
-                <input type="button" value="Edit" class="editTransaction" data-id="@item.Id" />
-                <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
+                <button type="button" class="btn btn-default btn-sm editTransaction" data-id="@item.Id">
+                  <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+                <button type="button" class="btn btn-default btn-sm deleteTransaction" data-id="@item.Id">
+                  <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                </button>
             </td>
         </tr>
     }
@@ -109,10 +115,11 @@
             @Html.DropDownList("ledger", Model.LedgerList, "Select...", new { name = "account", id="", @class="newtransaction" })
         </td>
         <td>
-            <input type="button" value="Save" id="submitNew" class="newtransaction" />
+            <button type="button" id="submitNew" class="btn btn-default btn-sm newtransaction">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Save
+            </button>
         </td>
     </tr>
-
 </table>
 </div>
     

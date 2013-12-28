@@ -30,7 +30,11 @@
         @Html.DropDownListFor(modelItem => Model.Transaction.Ledger, Model.LedgerList, "Select...", new { data_id = Model.Transaction.Id, id =""})
     </td>
     <td>
-        <input type="button" value="Update" class="saveEditedTransaction" data-id="@Model.Transaction.Id" />
-        <input type="button" value="Cancel" class="cancelEditingTransaction" data-id="@Model.Transaction.Id" />
+        <button type="button" class="btn btn-default btn-sm saveEditedTransaction" data-id="@Model.Transaction.Id">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+        </button>
+        <button type="button" class="btn btn-default btn-sm cancelEditingTransaction" data-id="@Model.Transaction.Id">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+        </button>
     </td>
 </tr>

@@ -12,7 +12,11 @@
         @Html.TextBoxFor(modelItem => Model.LedgerDesc, new { data_id = Model.Ledger, size = 30, id =""})
     </td>
     <td>
-        <input type="button" class="saveEditedLedger" data-id="@Model.Ledger" value="Save" />
-        <input type="button" class="cancelEditingLedger" data-id="@Model.Ledger" value="Cancel" />
+        <button type="button" class="btn btn-default btn-sm saveEditedLedger" data-id="@Model.Ledger">
+            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+        </button>
+        <button type="button" class="btn btn-default btn-sm cancelEditingLedger" data-id="@Model.Ledger">
+            <span class="glyphicon glyphicon-remove"></span> Cancel
+        </button>
     </td>
 </tr>
