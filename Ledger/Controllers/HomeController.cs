@@ -27,11 +27,14 @@ namespace Ledger.Controllers
             var model = new NavViewModel();
             model.Ledgers = _ledgerRepo.GetAllLedgers();
             var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
+            var controller = ControllerContext.ParentActionViewContext.RouteData.Values["controller"]  as string ?? "Home";
             if (action == "Unreconciled")
             {
                 var id = (string)RouteData.Values["id"];
                 model.SelectedNav = model.Ledgers.Single(l => l.Ledger.ToString() == id).LedgerDesc;
             }
+            else if (controller == "Ledger" || controller == "Account")
+                model.SelectedNav = "Admin";
             else
                 model.SelectedNav = action;
 

@@ -55,3 +55,7 @@ What's the deal with the difference? There's lots of situations where my bank do
 * It's ugly. Who really cares. Well, if you have to look at this every day, it should be easier on the eyes.
 
 * I'd like to show current/actual balances on the Home Index next to each ledger name.
+
+--- Credits ---
+
+"Ledger" logo found via creativecommons.org and modified from the original: http://commons.wikimedia.org/wiki/File:The_Star-Ledger_logo.png

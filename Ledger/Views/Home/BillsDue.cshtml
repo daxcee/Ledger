@@ -13,7 +13,8 @@
 
 <p>Paid date: <input type="text" id="paidDate" /></p>
 
-<table border="1">
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover table-condensed transaction-grid">
     <tr>
         <th>
             @Html.DisplayNameFor(model => dummy.Id)
@@ -44,44 +45,44 @@
         </th>
     </tr>
 
-@foreach (var item in Model.Transactions) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Desc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @if (item.DateDue.HasValue)
-            {
-                @item.DateDue.Value.ToString("M/d/yyyy")
-            }
-        </td>
-        <td>
-            <input type="button" class="doPaid" value="X" data-id="@item.Id" />
-        </td>
-        <td>
-            @if (item.DateReconciled.HasValue)
-            {
-                @item.DateReconciled.Value.ToString("M/d/yyyy")
-            }
-        </td>
-        <td>
-            @Model.AccountsList.Single(l => l.Value == item.Account.ToString()).Text
-        </td>
-        <td>
-            @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
-        </td>
-        <td>
-            <input type="button" value="Edit" class="editTransaction" data-id="@item.Id" />
-            <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.Transactions) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Desc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @if (item.DateDue.HasValue)
+                {
+                    @item.DateDue.Value.ToString("M/d/yyyy")
+                }
+            </td>
+            <td>
+                <input type="button" class="doPaid" value="X" data-id="@item.Id" />
+            </td>
+            <td>
+                @if (item.DateReconciled.HasValue)
+                {
+                    @item.DateReconciled.Value.ToString("M/d/yyyy")
+                }
+            </td>
+            <td>
+                @Model.AccountsList.Single(l => l.Value == item.Account.ToString()).Text
+            </td>
+            <td>
+                @Model.LedgerList.Single(l => l.Value == item.Ledger.ToString()).Text
+            </td>
+            <td>
+                <input type="button" value="Edit" class="editTransaction" data-id="@item.Id" />
+                <input type="button" value="Delete" class="deleteTransaction" data-id="@item.Id" />
+            </td>
+        </tr>
+    }
     <tr>
         <td>
             &nbsp;
@@ -113,5 +114,5 @@
     </tr>
 
 </table>
-
+</div>
     
