@@ -113,7 +113,8 @@ namespace Ledger.Models.Repositories
             var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
                         FROM transactions
                         WHERE datedue IS NOT null
-                        AND datepayed IS null";
+                        AND datepayed IS null
+                        ORDER BY datedue ASC";
             return _connection.Query<Transaction>(sql).ToList();
         }
 
