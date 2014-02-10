@@ -31,7 +31,7 @@ namespace Ledger.Models.Repositories
 
         public decimal GetCurrentBalance(int ledger)
         {
-            var sql = "SELECT COALESCE(SUM(amount),0.0) FROM transactions WHERE datereconciled is not null AND ledger = @ledger";
+            var sql = "SELECT CAST(COALESCE(SUM(amount),0.0) AS FLOAT) FROM transactions WHERE datereconciled is not null AND ledger = @ledger";
             var sums = _connection.Query<double>(sql, new {ledger});
             var sumAmount = sums.FirstOrDefault();
             return (decimal)Math.Round(sumAmount, 2);
@@ -39,7 +39,7 @@ namespace Ledger.Models.Repositories
 
         public decimal GetActualBalance(int ledger)
         {
-            var sql = "SELECT COALESCE(SUM(amount),0.0) FROM transactions WHERE datepayed is not null AND ledger = @ledger";
+            var sql = "SELECT CAST(COALESCE(SUM(amount),0.0) AS FLOAT) FROM transactions WHERE datepayed is not null AND ledger = @ledger";
             var sums = _connection.Query<double>(sql, new { ledger });
             var sumAmount = sums.FirstOrDefault();
             return (decimal)Math.Round(sumAmount, 2);
