@@ -25,7 +25,8 @@ namespace Ledger.Models.Repositories
                         FROM transactions
                         WHERE datereconciled IS null
                         AND datepayed IS NOT null
-                        AND ledger = @ledger";
+                        AND ledger = @ledger
+                        ORDER BY datepayed";
             return _connection.Query<Transaction>(sql, new {ledger}).ToList();
         }
 
