@@ -31,14 +31,18 @@ namespace Ledger.Models.Repositories
 
         public decimal GetCurrentBalance(int ledger)
         {
-            var sql = "SELECT SUM(amount) FROM transactions WHERE datereconciled is not null AND ledger = @ledger";
-            return (decimal)Math.Round(_connection.Query<double>(sql, new {ledger}).First(), 2);
+            var sql = "SELECT COALESCE(SUM(amount),0.0) FROM transactions WHERE datereconciled is not null AND ledger = @ledger";
+            var sums = _connection.Query<double>(sql, new {ledger});
+            var sumAmount = sums.FirstOrDefault();
+            return (decimal)Math.Round(sumAmount, 2);
         }
 
         public decimal GetActualBalance(int ledger)
         {
-            var sql = "SELECT SUM(amount) FROM transactions WHERE datepayed is not null AND ledger = @ledger";
-            return (decimal) Math.Round(_connection.Query<double>(sql, new {ledger}).First(), 2);
+            var sql = "SELECT COALESCE(SUM(amount),0.0) FROM transactions WHERE datepayed is not null AND ledger = @ledger";
+            var sums = _connection.Query<double>(sql, new { ledger });
+            var sumAmount = sums.FirstOrDefault();
+            return (decimal)Math.Round(sumAmount, 2);
         }
 
         public IEnumerable<LedgerEntity> GetAllLedgers()
