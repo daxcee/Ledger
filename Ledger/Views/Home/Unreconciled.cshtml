@@ -14,8 +14,8 @@
 <input type="hidden" id="ledgerId" value="@Model.Ledger"/>
 
 <p>
-    Current Balance: <strong><span id="currentBalance">@Model.CurrentBalance</span></strong>,
-    Actual Balance: <strong>@Model.ActualBalance</strong>
+    Current Balance: <strong><span id="currentBalance">@Model.CurrentBalance.ToString("N2")</span></strong>,
+    Actual Balance: <strong>@Model.ActualBalance.ToString("N2")</strong>
 </p>
 
 <p>Reconciled date: <input type="text" id="reconcileDate" /></p>
