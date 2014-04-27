@@ -25,7 +25,8 @@ namespace Ledger.Models.Repositories
 
         public void CreateLedger(LedgerEntity ledger)
         {
-            _connection.Execute("INSERT INTO ledgers (ledgerdesc) VALUES (@LedgerDesc)", new {ledger.LedgerDesc});
+            _connection.Execute("INSERT INTO ledgers (ledgerdesc, isactive) VALUES (@LedgerDesc, @IsActive)",
+                new {ledger.LedgerDesc, ledger.IsActive});
         }
 
         public LedgerEntity GetLedger(long id)

@@ -83,6 +83,7 @@
     var submitNewLedger = function () {
         var ledger = {};
         ledger.LedgerDesc = $(".newLedger[name='LedgerDesc']").val();
+        ledger.IsActive = $(".newLedger[name='IsActive']").is(":checked");
 
         if (validate(ledger)) {
             submitNewLedgerToWebService(ledger);
