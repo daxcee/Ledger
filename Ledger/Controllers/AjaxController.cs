@@ -92,7 +92,7 @@ namespace Ledger.Controllers
         {
             var model = new TransactionEditViewModel();
             model.Transaction = _transRepo.GetTransaction(id);
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", model.Transaction.Ledger);
+            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc", model.Transaction.Ledger);
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc", model.Transaction.Account);
             return PartialView(model);
         } 
@@ -118,7 +118,7 @@ namespace Ledger.Controllers
 
             var t = _transRepo.GetTransaction(id);
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
+            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc", id);
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = id;
 
@@ -152,7 +152,7 @@ namespace Ledger.Controllers
             var t = _transRepo.GetTransaction(transaction.Id);
             var model = new UnreconciledViewModel();
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", t.Id);
+            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc", t.Id);
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = t.Id;
 
