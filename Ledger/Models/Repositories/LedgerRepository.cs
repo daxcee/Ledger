@@ -20,7 +20,7 @@ namespace Ledger.Models.Repositories
 
         public List<LedgerEntity> GetAllLedgers()
         {
-            return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc FROM ledgers ORDER BY ledgerdesc").ToList();
+            return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc, isactive FROM ledgers ORDER BY ledgerdesc").ToList();
         }
 
         public void CreateLedger(LedgerEntity ledger)
@@ -30,12 +30,18 @@ namespace Ledger.Models.Repositories
 
         public LedgerEntity GetLedger(long id)
         {
-            return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc FROM ledgers WHERE ledger = @id", new { id }).FirstOrDefault();
+            return _connection.Query<LedgerEntity>("SELECT ledger, ledgerdesc, isactive FROM ledgers WHERE ledger = @id", new { id }).FirstOrDefault();
         }
 
         public void UpdateLedger(LedgerEntity ledger)
         {
-            _connection.Execute("UPDATE ledgers SET ledgerdesc = @LedgerDesc WHERE ledger = @Ledger", new { ledger.Ledger, ledger.LedgerDesc });
+            _connection.Execute("UPDATE ledgers SET ledgerdesc = @LedgerDesc, isactive = @IsActive WHERE ledger = @Ledger",
+                new { ledger.Ledger, ledger.LedgerDesc, ledger.IsActive });
+        }
+
+        public List<LedgerEntity> GetAllActiveLedgers()
+        {
+            return GetAllLedgers().Where(l => l.IsActive).ToList();
         }
     }
 }

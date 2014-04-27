@@ -25,7 +25,7 @@ namespace Ledger.Controllers
         public PartialViewResult Nav()
         {
             var model = new NavViewModel();
-            model.Ledgers = _ledgerRepo.GetAllLedgers();
+            model.Ledgers = _ledgerRepo.GetAllActiveLedgers();
             var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
             var controller = ControllerContext.ParentActionViewContext.RouteData.Values["controller"]  as string ?? "Home";
             if (action == "Unreconciled")

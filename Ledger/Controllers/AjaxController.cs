@@ -162,9 +162,9 @@ namespace Ledger.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateLedger(int ledger, string ledgerDesc)
+        public ActionResult UpdateLedger(int ledger, string ledgerDesc, bool isActive)
         {
-            var ledgerIn = new LedgerEntity {Ledger = ledger, LedgerDesc = ledgerDesc};
+            var ledgerIn = new LedgerEntity {Ledger = ledger, LedgerDesc = ledgerDesc, IsActive = isActive};
             if (!ModelState.IsValid || ledgerIn.Ledger <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
 

@@ -9,6 +9,8 @@ namespace Ledger.Models.Entities
         public long Ledger { get; set; }
         [Display(Name = "Description")]
         public string LedgerDesc { get; set; }
+        [Display(Name = "Active?")]
+        public bool IsActive { get; set; }
     }
 
     public class LedgerEntityValidation : AbstractValidator<LedgerEntity>

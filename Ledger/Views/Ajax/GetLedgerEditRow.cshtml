@@ -12,6 +12,9 @@
         @Html.TextBoxFor(modelItem => Model.LedgerDesc, new { data_id = Model.Ledger, size = 30, id =""})
     </td>
     <td>
+        @Html.CheckBoxFor(modelItem => Model.IsActive, new { data_id = Model.Ledger, id =""})
+    </td>
+    <td>
         <button type="button" class="btn btn-default btn-sm saveEditedLedger" data-id="@Model.Ledger">
             <span class="glyphicon glyphicon-floppy-disk"></span> Save
         </button>

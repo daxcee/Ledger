@@ -8,8 +8,9 @@
 CREATE TABLE [ledgers] (
 [ledger] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
 [ledgerdesc] VARCHAR(50)  NOT NULL,
-[friendlyname] VARCHAR(255)  NULL
-);
+[friendlyname] VARCHAR(255)  NULL,
+[isactive] BOOLEAN DEFAULT '1' NOT NULL
+)
 
 CREATE TABLE [transactions] (
 [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,

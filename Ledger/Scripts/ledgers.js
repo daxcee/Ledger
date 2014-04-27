@@ -4,6 +4,7 @@
         var ledger = {};
         ledger.Ledger = id;
         ledger.LedgerDesc = $("[name='LedgerDesc'][data-id='" + id + "']").val();
+        ledger.IsActive = $("[name='IsActive'][data-id='" + id + "']").is(":checked");
 
         if (validate(ledger)) {
             submitUpdatedLedgerToWebService(ledger);

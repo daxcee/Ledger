@@ -22,6 +22,9 @@
             @Html.DisplayNameFor(model => dummy.LedgerDesc)
         </th>
         <th>
+            @Html.DisplayNameFor(model => dummy.IsActive)
+        </th>
+        <th>
             &nbsp;
         </th>
     </tr>
@@ -36,6 +39,9 @@
                 @Html.DisplayFor(i => ledger.LedgerDesc)
             </td>
             <td>
+                @Html.DisplayFor(i => ledger.IsActive)
+            </td>
+            <td>
                 <button type="button" class="btn btn-default btn-sm editLedger" data-id="@ledger.Ledger">
                     <span class="glyphicon glyphicon-edit"></span> Edit
                 </button>
@@ -48,6 +54,9 @@
         </td>
         <td>
             <input type="text" name="LedgerDesc" class="newLedger" />
+        </td>
+        <td>
+            <input type="checkbox" name="IsActive" class="newLedger" />
         </td>
         <td>
             <button type="button" id="submitNewLedger" class="btn btn-default btn-sm">
