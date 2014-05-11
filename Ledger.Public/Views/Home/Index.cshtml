@@ -1,0 +1,32 @@
+﻿@model Ledger.Public.Models.ReceiptViewModel
+@{
+    ViewBag.Title = "Enter a receipt please";
+}
+
+<p>Enter receipt:</p>
+
+@using(Html.BeginForm())
+{
+    <p>
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { placeholder = "Description"})
+        @Html.ValidationMessageFor(m => m.Description)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Amount)
+        @Html.TextBoxFor(m => m.Amount, new { placeholder = "Amount" })
+        @Html.ValidationMessageFor(m => m.Amount)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.DatePayed)
+        @Html.TextBox("DatePayed", Model.DatePayed.ToString("M/dd/yyyy"), new {placeholder = "Date" })
+        @Html.ValidationMessageFor(m => m.DatePayed)
+    </p>
+
+    <input type="submit" value="Save" />
+}
+
+@if (Model.NumTransactions > 0)
+{
+    <p>There are @Model.NumTransactions transaction(s) waiting to be processed.</p>
+}
