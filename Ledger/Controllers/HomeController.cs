@@ -18,7 +18,11 @@ namespace Ledger.Controllers
 
         public ViewResult Index()
         {
-            return View();
+            var model = new RecentTransactionsViewModel();
+            model.Transactions = _transRepo.GetRecentReconciledTransations(100);
+            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
+            return View(model);
         }
 
         [ChildActionOnly]

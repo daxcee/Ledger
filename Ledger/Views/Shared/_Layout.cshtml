@@ -9,16 +9,14 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">        
+        <div class="navbar navbar-inverse" role="navigation">        
             <div class="container">
                 @Html.Action("Nav","Home")
             </div>
         </div>
 
         <div class="container">
-            <div class="starter-template">
-                @RenderBody()
-            </div>
+            @RenderBody()
         </div>
 
         <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>

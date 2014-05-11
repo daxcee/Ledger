@@ -27,6 +27,11 @@ namespace Ledger.Models.Entities
         {
             return DateDue.HasValue && !DatePayed.HasValue;
         }
+
+        public bool IsUnreconciled()
+        {
+            return !DateReconciled.HasValue;
+        }
     }
 
     public class TransactionValidation : AbstractValidator<Transaction>

@@ -124,7 +124,9 @@ namespace Ledger.Controllers
 
             if (t.IsABillDue())
                 return PartialView("GetRowBillsDue", model);
-            return PartialView("GetRowUnreconciled", model);
+            if(t.IsUnreconciled())
+                return PartialView("GetRowUnreconciled", model);
+            return PartialView("GetRowReconciled", model);
         }
         
         [HttpGet]
@@ -158,7 +160,9 @@ namespace Ledger.Controllers
 
             if (t.IsABillDue())
                 return PartialView("GetRowBillsDue", model);
-            return PartialView("GetRowUnreconciled", model);
+            if(t.IsUnreconciled())
+                return PartialView("GetRowUnreconciled", model);
+            return PartialView("GetRowReconciled", model);
         }
 
         [HttpPost]

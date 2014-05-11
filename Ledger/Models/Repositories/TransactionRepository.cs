@@ -131,5 +131,15 @@ namespace Ledger.Models.Repositories
                         WHERE id = @id";
             _connection.Execute(sql, new { id, DatePayed = paidDate });
         }
+
+        public List<Transaction> GetRecentReconciledTransations(int numTransactions)
+        {
+            var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
+                        FROM transactions
+                        WHERE datereconciled IS NOT null
+                        ORDER BY datereconciled DESC
+                        LIMIT " + numTransactions;
+            return _connection.Query<Transaction>(sql).ToList();
+        }
     }
 }

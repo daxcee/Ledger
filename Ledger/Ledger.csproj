@@ -144,6 +144,7 @@
     <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
     <Compile Include="Models\ViewModels\NavViewModel.cs" />
     <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
+    <Compile Include="Models\ViewModels\RecentTransactionsViewModel.cs" />
     <Compile Include="Models\ViewModels\TransactionEditViewModel.cs" />
     <Compile Include="Models\ViewModels\UnreconciledViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -209,6 +210,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Nav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Ajax\GetRowReconciled.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
