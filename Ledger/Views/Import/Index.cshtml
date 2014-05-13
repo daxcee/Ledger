@@ -1,0 +1,36 @@
+﻿@model Ledger.Models.ViewModels.ImportViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Receipts to Import</h2>
+
+@Html.HiddenFor(m => m.BaseUrl)
+@Html.HiddenFor(m => m.Token)
+
+@section scripts
+{
+<script type="text/javascript">
+    $(document).ready(function () {
+        var baseUrl = $("#BaseUrl").val();
+        var token = $("#Token").val();
+        var apiurl = baseUrl + "/Home/GetAllReceipts?token=" + token;
+        console.log(apiurl);
+//        $.getJSON(apiurl, function(resp) {
+//            console.log("woo");
+//        });
+        $.ajax({
+            dataType: "jsonp",
+            type: "GET",
+            url: apiurl,
+            success: function(resp) {
+                console.log("hey");
+            },
+            error: function (jqxhr, textStatus, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+}

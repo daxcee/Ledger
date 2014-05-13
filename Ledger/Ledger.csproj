@@ -131,6 +131,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\LedgerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -142,6 +143,7 @@
     <Compile Include="Models\Repositories\TransactionRepository.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
+    <Compile Include="Models\ViewModels\ImportViewModel.cs" />
     <Compile Include="Models\ViewModels\NavViewModel.cs" />
     <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
     <Compile Include="Models\ViewModels\RecentTransactionsViewModel.cs" />
@@ -213,6 +215,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Ajax\GetRowReconciled.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Import\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

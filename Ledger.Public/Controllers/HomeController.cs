@@ -2,11 +2,12 @@
 using System.Net;
 using System.Web.Mvc;
 using Ledger.Public.Models;
+using Mvc.Jsonp;
 
 namespace Ledger.Public.Controllers
 {
     [AuthFilter]
-    public class HomeController : Controller
+    public class HomeController : JsonpControllerBase
     {
         readonly IReceiptRepository _receiptRepository;
 
@@ -36,17 +37,16 @@ namespace Ledger.Public.Controllers
             return View(model);
         }
 
-        public JsonResult GetAllReceipts()
+        public JsonpResult GetAllReceipts(string callback)
         {
             var idList = _receiptRepository.GetAllReceipts();
-            return Json(idList, JsonRequestBehavior.AllowGet);
+            return Jsonp(idList, callback, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult DeleteReceipt(Guid id)
+        public ActionResult DeleteReceipt(Guid id, string callback)
         {
             if(id == Guid.Empty)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "No id specified");
-
             try
             {
                 _receiptRepository.DeleteReceipt(id);

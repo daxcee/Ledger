@@ -37,7 +37,7 @@ namespace Ledger.Controllers
                 var id = (string)RouteData.Values["id"];
                 model.SelectedNav = model.Ledgers.Single(l => l.Ledger.ToString() == id).LedgerDesc;
             }
-            else if (controller == "Ledger" || controller == "Account")
+            else if (controller == "Ledger" || controller == "Account" || controller == "Import")
                 model.SelectedNav = "Admin";
             else
                 model.SelectedNav = action;
