@@ -56,6 +56,22 @@ What's the deal with the difference? There's lots of situations where my bank do
 
 Sometimes I'll just transpose numbers or make a typo or something. So, I added the 100 latest reconciled transactions to the "Home" page that you can view and edit and make fixes. This doesn't happen very often, but when it did, I would have to actually open up the SQLite database directly (I use [SQLite Administrator](http://sqliteadmin.orbmu2k.de/)), which is kinda a pain.
 
+## Receipts catcher ##
+
+I introduced another project to this repository: Ledger.public. This is meant to run as a totally optional, publicly exposed website for you to enter your receipts while you are away from the normal ledger site (which I run inside my home firewall).
+
+This is a little wacky, so stay with me.
+
+When you deploy Ledger.public (to a nice free Azure site, for instance), you'll need to specify a secret token in the Web.config (or Web.custom.config). This token is basically a password, so make sure it's a good one, and you're deploying to a site that has TLS (like a nice free https://*.azurewebsites.net site, for instance). You'll also need to specify this in the Ledger Web.config (or Web.custom.config). Then, bookmark a url like this:
+
+https://yourreceiptsite.azurewebsites.net/?token=yersecrettoken
+
+The storage for this is just plain text json files on the web server. These files are small in size, and transient, so they are meant to be small in number. So don't worry about it taking up too much disk space.
+
+You can then go and start entering receipts as you spend money right on your phone. The information you need to enter is very minimal (I made this for my wife, and she would be annoyed if she had to take the extra time to select an account and a ledger and so on).
+
+Later on, when you're home balancing your checkbook, pull up the "Import" screen from the "Admin" pulldown menu at the top right. This page will make a jsonp call to get all the receipts that are out there at the public site and show them to you. You can make corrections, select an account/ledger, and then click "Get" to transfer this transaction to your ledger. Or you can just click "Delete" (if its erroneous or a duplicate). Repeat until all the receipts are gone. Minimum work for everyone involved, and now the accuracy of your account is more likely to improve because we all know that those paper receipts often get lost or forgotten before they make it home.
+
 ## Future stuff ##
 
 * I used to have some good reports in Access, but I never really got around to that in the web versions. Also, I started using Mint.com which is a great tool to help you categorize transactions and do budgeting. I want to add some reports back.
@@ -65,8 +81,6 @@ Sometimes I'll just transpose numbers or make a typo or something. So, I added t
 * Need a confirmation for deleting transactions
 
 * There's a bit too much repetition of markup to deal with the Ajax stuff: consolidate into partial views or something.
-
-* I would like some sort of way to enter transactions when I'm on my phone. So I'd have to actually deploy this to a real website (not just running locally behind my firewal). Which means SSL and authentication. Alternatively, I could create some sort of "satellite" web site that I can sync with/pull transactions from voluntarily.
 
 ## Credits ##
 
