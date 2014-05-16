@@ -9,7 +9,7 @@
 @Html.HiddenFor(m => m.BaseUrl)
 @Html.HiddenFor(m => m.Token)
 
-<div id="receipts">
+<div id="receipts" class="form-group">
     <img src="~/Content/spinner.gif" alt="Loading..." id="loading-spinner" />
 </div>
 
@@ -26,30 +26,34 @@
                 <th>Account</th>
                 <th>Ledger</th>
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
             {{#.}}
             <tr data-id="{{Id}}">
-                <td><input type="text" value="{{Description}}" name="Description" size="50" /></td>
-                <td><input type="text" value="{{DatePayedFormatted}}" name="DatePayed" size="20" /></td>
-                <td><input type="text" value="{{Amount}}" name="Amount" size="20" /></td>
+                <td><input type="text" class="form-control" value="{{Description}}" name="Description" size="50" /></td>
+                <td><input type="text" class="form-control" value="{{DatePayedFormatted}}" name="DatePayed" size="20" /></td>
+                <td><input type="text" class="form-control" value="{{AmountNegative}}" name="Amount" size="20" /></td>
                 <td>
-                    @Html.DropDownList("account", Model.AccountsList, "Select...", new { name = "account", id = "", @class = "newtransaction" })
+                    @Html.DropDownList("account", Model.AccountsList, "Select...", new { name = "account", id = "", @class = "newtransaction form-control" })
                 </td>
                 <td>
-                    @Html.DropDownList("ledger", Model.LedgerList, "Select...", new { name = "account", id = "", @class = "newtransaction" })
+                    @Html.DropDownList("ledger", Model.LedgerList, "Select...", new { name = "account", id = "", @class = "newtransaction form-control" })
                 </td>
                 <td>
                     <button type="button" class="btn btn-default btn-sm get-receipt" data-id="{{Id}}">
                         <span class="glyphicon glyphicon-cloud-download"></span> Get
                     </button>
+                </td>
+                <td>
                     <button type="button" class="btn btn-default btn-sm delete-receipt" data-id="{{Id}}">
                         <span class="glyphicon glyphicon-remove-circle"></span> Delete
                     </button>
+                    </p>
                 </td>
             </tr>
             {{/.}}
         </table>
-</script>
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -61,25 +65,66 @@
                 type: "GET",
                 url: getAllReceiptsUrl,
                 success: function(resp) {
-                    var template = $("#receipts-template").html();
+                    var mustachetemplate = $("#receipts-template").html();
                     resp.DatePayedFormatted = function() {
                         return moment(this.DatePayed).format("M/DD/YYYY");
                     };
-                    var output = Mustache.render(template, resp);
-                    console.log(resp);
+                    resp.AmountNegative = function() {
+                        return this.Amount * -1;
+                    };
+                    var output = Mustache.render(mustachetemplate, resp);
                     $("#receipts").html(output);
                 },
                 error: function(jqxhr, textStatus, error) {
-                    console.log(error);
+                    alert("There was an error getting receipts: " + error);
                 }
             });
 
-            $(document).on("click", ".get-receipt", function() {
-                console.log($(this).data("id"));
-            });
+            var getReceipt = function(id) {
+                var row = $("tr[data-id='" + id + "']");
+                var receipt = {};
+                receipt.Desc = row.find("[name='Description']").val();
+                receipt.DatePayed = row.find("[name='DatePayed']").val();
+                receipt.Amount = row.find("[name='Amount']").val();
+                receipt.Account = row.find("[name='account']").val();
+                receipt.Ledger = row.find("[name='ledger']").val();
+                return receipt;
+            };
 
-            $(document).on("click", ".delete-receipt", function () {
-                var id = $(this).data("id");
+            var validate = function(receipt) {
+                var errors = [];
+                if (receipt.Desc == "")
+                    errors.push({ field: "Description", message: "*" });
+                if (receipt.DatePayed == "")
+                    errors.push({ field: "DatePayed", message: "*" });
+                else if (!moment(new Date(receipt.DatePayed)).isValid())
+                    errors.push({ field: "DatePayed", message: "Invalid date" });
+                if (receipt.Amount == "")
+                    errors.push({ field: "Amount", message: "*" });
+                if (receipt.Ledger == "")
+                    errors.push({ field: "ledger", message: "*" });
+                if (receipt.Account == "")
+                    errors.push({ field: "account", message: "*" });
+                return errors;
+            }
+
+            var showErrorsOnRow = function(id, errors) {
+                var row = $("tr[data-id='" + id + "']");
+                row.find(".has-error").removeClass("has-error");
+                for (var i = 0; i < errors.length; i++) {
+                    var error = errors[i];
+                    var field = row.find("[name='" + error.field + "']");
+                    field.closest("td").addClass("has-error");
+                }
+            };
+
+            var removeRowFromDom = function(id) {
+                $("tr[data-id='" + id + "']").fadeOut(1000, function () {
+                    $("tr[data-id='" + id + "']").remove();
+                });
+            };
+
+            var deleteReceipt = function (id, callback) {
                 var deleteReceiptUrl = baseUrl + "/Home/DeleteReceipt/" + id + "?token=" + token;
 
                 $.ajax({
@@ -87,12 +132,42 @@
                     type: "GET",
                     url: deleteReceiptUrl,
                     success: function (resp) {
-                        console.log("baleeted");
+                        removeRowFromDom(id);
+                        if(callback)
+                            callback();
                     },
                     error: function (jqxhr, textStatus, error) {
-                        console.log(error);
+                        alert("There was an error deleting: " + error);
                     }
                 });
+            }
+
+            $(document).on("click", ".get-receipt", function() {
+                var id = $(this).data("id");
+                var receipt = getReceipt(id);
+                var errors = validate(receipt);
+                if (errors.length >= 1) {
+                    showErrorsOnRow(id, errors);
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Ajax/CreateTransaction",
+                    data: receipt,
+                    success: function (resp) {
+                        deleteReceipt(id, function() {
+                            removeRowFromDom(id);
+                        });
+                    },
+                    error: function (jqxhr, textStatus, error) {
+                        alert("There was an error deleting: " + error);
+                    }
+                });
+            });
+
+            $(document).on("click", ".delete-receipt", function() {
+                var id = $(this).data("id");
+                deleteReceipt(id);
             });
         });
     </script>
