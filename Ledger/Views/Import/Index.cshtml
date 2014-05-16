@@ -9,28 +9,91 @@
 @Html.HiddenFor(m => m.BaseUrl)
 @Html.HiddenFor(m => m.Token)
 
+<div id="receipts">
+    <img src="~/Content/spinner.gif" alt="Loading..." id="loading-spinner" />
+</div>
+
 @section scripts
 {
-<script type="text/javascript">
-    $(document).ready(function () {
-        var baseUrl = $("#BaseUrl").val();
-        var token = $("#Token").val();
-        var apiurl = baseUrl + "/Home/GetAllReceipts?token=" + token;
-        console.log(apiurl);
-//        $.getJSON(apiurl, function(resp) {
-//            console.log("woo");
-//        });
-        $.ajax({
-            dataType: "jsonp",
-            type: "GET",
-            url: apiurl,
-            success: function(resp) {
-                console.log("hey");
-            },
-            error: function (jqxhr, textStatus, error) {
-                console.log(error);
-            }
-        });
-    });
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
+
+    <script id="receipts-template" type="text/template">
+        <table class="table table-striped table-bordered table-hover table-condensed transaction-grid">
+            <tr>
+                <th>Description</th>
+                <th>Date Paid</th>
+                <th>Amount</th>
+                <th>Account</th>
+                <th>Ledger</th>
+                <th>&nbsp;</th>
+            </tr>
+            {{#.}}
+            <tr data-id="{{Id}}">
+                <td><input type="text" value="{{Description}}" name="Description" size="50" /></td>
+                <td><input type="text" value="{{DatePayedFormatted}}" name="DatePayed" size="20" /></td>
+                <td><input type="text" value="{{Amount}}" name="Amount" size="20" /></td>
+                <td>
+                    @Html.DropDownList("account", Model.AccountsList, "Select...", new { name = "account", id = "", @class = "newtransaction" })
+                </td>
+                <td>
+                    @Html.DropDownList("ledger", Model.LedgerList, "Select...", new { name = "account", id = "", @class = "newtransaction" })
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm get-receipt" data-id="{{Id}}">
+                        <span class="glyphicon glyphicon-cloud-download"></span> Get
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm delete-receipt" data-id="{{Id}}">
+                        <span class="glyphicon glyphicon-remove-circle"></span> Delete
+                    </button>
+                </td>
+            </tr>
+            {{/.}}
+        </table>
 </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var baseUrl = $("#BaseUrl").val();
+            var token = $("#Token").val();
+            var getAllReceiptsUrl = baseUrl + "/Home/GetAllReceipts?token=" + token;
+            $.ajax({
+                dataType: "jsonp",
+                type: "GET",
+                url: getAllReceiptsUrl,
+                success: function(resp) {
+                    var template = $("#receipts-template").html();
+                    resp.DatePayedFormatted = function() {
+                        return moment(this.DatePayed).format("M/DD/YYYY");
+                    };
+                    var output = Mustache.render(template, resp);
+                    console.log(resp);
+                    $("#receipts").html(output);
+                },
+                error: function(jqxhr, textStatus, error) {
+                    console.log(error);
+                }
+            });
+
+            $(document).on("click", ".get-receipt", function() {
+                console.log($(this).data("id"));
+            });
+
+            $(document).on("click", ".delete-receipt", function () {
+                var id = $(this).data("id");
+                var deleteReceiptUrl = baseUrl + "/Home/DeleteReceipt/" + id + "?token=" + token;
+
+                $.ajax({
+                    dataType: "jsonp",
+                    type: "GET",
+                    url: deleteReceiptUrl,
+                    success: function (resp) {
+                        console.log("baleeted");
+                    },
+                    error: function (jqxhr, textStatus, error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
 }

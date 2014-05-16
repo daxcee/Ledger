@@ -50,13 +50,12 @@ namespace Ledger.Public.Controllers
             try
             {
                 _receiptRepository.DeleteReceipt(id);
+                return Jsonp("Success", callback, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
             }
-
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }
