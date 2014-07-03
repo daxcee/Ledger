@@ -39,10 +39,5 @@ namespace Ledger.Models.Repositories
             _connection.Execute("UPDATE ledgers SET ledgerdesc = @LedgerDesc, isactive = @IsActive WHERE ledger = @Ledger",
                 new { ledger.Ledger, ledger.LedgerDesc, ledger.IsActive });
         }
-
-        public List<LedgerEntity> GetAllActiveLedgers()
-        {
-            return GetAllLedgers().Where(l => l.IsActive).ToList();
-        }
     }
 }

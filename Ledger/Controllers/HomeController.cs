@@ -20,7 +20,7 @@ namespace Ledger.Controllers
         {
             var model = new RecentTransactionsViewModel();
             model.Transactions = _transRepo.GetRecentReconciledTransations(100);
-            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc");
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc");
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             return View(model);
         }
@@ -29,7 +29,7 @@ namespace Ledger.Controllers
         public PartialViewResult Nav()
         {
             var model = new NavViewModel();
-            model.Ledgers = _ledgerRepo.GetAllActiveLedgers();
+            model.Ledgers = _transRepo.GetAllLedgers().Where(l => l.IsActive).ToList();
             var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
             var controller = ControllerContext.ParentActionViewContext.RouteData.Values["controller"]  as string ?? "Home";
             if (action == "Unreconciled")
@@ -51,7 +51,7 @@ namespace Ledger.Controllers
             model.Transactions = _transRepo.GetUnreconciled(id);
             model.CurrentBalance = _transRepo.GetCurrentBalance(id);
             model.ActualBalance = _transRepo.GetActualBalance(id);
-            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc", id);
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             model.Ledger = id;
             return View(model);
@@ -61,7 +61,7 @@ namespace Ledger.Controllers
         {
             var model = new UnreconciledViewModel();
             model.Transactions = _transRepo.GetBillsDue();
-            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc");
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers().Where(l => l.IsActive), "Ledger", "LedgerDesc");
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             return View(model);
         }

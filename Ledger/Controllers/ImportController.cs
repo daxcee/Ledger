@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
 using Ledger.Models.Repositories;
 using Ledger.Models.ViewModels;
@@ -19,7 +20,7 @@ namespace Ledger.Controllers
             var model = new ImportViewModel();
             model.BaseUrl = ConfigurationManager.AppSettings["PublicServiceBaseUrl"];
             model.Token = ConfigurationManager.AppSettings["PublicServiceToken"];
-            model.LedgerList = new SelectList(_transRepo.GetAllActiveLedgers(), "Ledger", "LedgerDesc");
+            model.LedgerList = new SelectList(_transRepo.GetAllLedgers().Where(l => l.IsActive), "Ledger", "LedgerDesc");
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             return View(model);
         }

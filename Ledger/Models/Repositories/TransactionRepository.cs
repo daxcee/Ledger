@@ -46,15 +46,6 @@ namespace Ledger.Models.Repositories
             return (decimal)Math.Round(sumAmount, 2);
         }
 
-        public IEnumerable<LedgerEntity> GetAllActiveLedgers()
-        {
-            var sql = @"SELECT ledger, ledgerdesc
-                        FROM ledgers
-                        WHERE isactive = 1
-                        ORDER BY ledgerdesc";
-            return _connection.Query<LedgerEntity>(sql);
-        }
-
         public IEnumerable<Account> GetAllAccounts()
         {
             var sql = @"SELECT id, [desc]
@@ -140,6 +131,14 @@ namespace Ledger.Models.Repositories
                         ORDER BY datereconciled DESC
                         LIMIT " + numTransactions;
             return _connection.Query<Transaction>(sql).ToList();
+        }
+
+        public IEnumerable<LedgerEntity> GetAllLedgers()
+        {
+            var sql = @"SELECT ledger, ledgerdesc, isactive
+                        FROM ledgers
+                        ORDER BY ledgerdesc";
+            return _connection.Query<LedgerEntity>(sql);
         }
     }
 }
