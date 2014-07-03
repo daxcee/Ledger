@@ -9,5 +9,6 @@ namespace Ledger.Models.ViewModels
         public List<Transaction> Transactions { get; set; }
         public SelectList LedgerList { get; set; }
         public SelectList AccountsList { get; set; }
+        public string SearchTerm { get; set; }
     }
 }

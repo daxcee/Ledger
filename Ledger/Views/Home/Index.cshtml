@@ -2,6 +2,7 @@
 
 @section scripts {
     <script type="text/javascript" src="@Url.Content("~/Scripts/transactions.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/home.js")"></script>
 }
 
 @{
@@ -9,8 +10,23 @@
     var dummy = Model.Transactions.FirstOrDefault();
 }
 
-<h2>Recently reconciled transactions</h2>
-<p><em>The 100 most recently reconciled transactions.</em></p>
+@if (string.IsNullOrEmpty(Model.SearchTerm))
+{
+    <h2>Recently reconciled transactions</h2>
+    <p><em>The 100 most recently reconciled transactions.</em></p>
+}
+else
+{
+    <h2>Searching for '@Model.SearchTerm'</h2>
+    <p><em>Searching the description and amount.</em></p>
+}
+
+<p>
+    <input type="text" id="search-text" placeholder="Search..." value="@Model.SearchTerm" />
+    <button type="button" id="search-button" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+</p>
 
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover table-condensed transaction-grid">

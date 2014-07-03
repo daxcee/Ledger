@@ -16,10 +16,14 @@ namespace Ledger.Controllers
             _ledgerRepo = new LedgerRepository();
         }
 
-        public ViewResult Index()
+        public ViewResult Index(string q)
         {
             var model = new RecentTransactionsViewModel();
-            model.Transactions = _transRepo.GetRecentReconciledTransations(100);
+            if (string.IsNullOrEmpty(q))
+                model.Transactions = _transRepo.GetRecentReconciledTransations(100);
+            else
+                model.Transactions = _transRepo.GetTransactionsSearch(q);
+            model.SearchTerm = q;
             model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc");
             model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
             return View(model);

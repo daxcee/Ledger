@@ -140,5 +140,15 @@ namespace Ledger.Models.Repositories
                         ORDER BY ledgerdesc";
             return _connection.Query<LedgerEntity>(sql);
         }
+
+        public List<Transaction> GetTransactionsSearch(string searchTerm)
+        {
+            var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
+                        FROM transactions
+                        WHERE datereconciled IS NOT null
+                        AND ((desc LIKE @searchTerm) OR (amount LIKE @searchTerm))
+                        ORDER BY datereconciled DESC";
+            return _connection.Query<Transaction>(sql, new { searchTerm = "%" + searchTerm + "%" }).ToList();
+        }
     }
 }
