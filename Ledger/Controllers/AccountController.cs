@@ -1,22 +1,24 @@
 ﻿using System.Web.Mvc;
-using Ledger.Models.Repositories;
+using Ledger.Models;
+using Ledger.Models.CommandQuery;
+using Ledger.Models.CommandQuery.Account;
 using Ledger.Models.ViewModels;
 
 namespace Ledger.Controllers
 {
     public class AccountController : Controller
     {
-        readonly AccountRepository _acctRepo;
+        readonly IDatabase _db;
 
-        public AccountController()
+        public AccountController(IDatabase db)
         {
-            _acctRepo = new AccountRepository();
+            _db = db;
         }
 
         public ViewResult Index()
         {
             var model = new AccountsViewModel();
-            model.Accounts = _acctRepo.GetAllAccounts();
+            model.Accounts = _db.Execute(new GetAllAccountsQuery());
             return View(model);
         }
     }

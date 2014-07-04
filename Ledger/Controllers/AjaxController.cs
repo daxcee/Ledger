@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Ledger.Models;
+using Ledger.Models.CommandQuery;
+using Ledger.Models.CommandQuery.Account;
 using Ledger.Models.Entities;
 using Ledger.Models.Repositories;
 using Ledger.Models.ViewModels;
@@ -13,13 +16,13 @@ namespace Ledger.Controllers
     {
         readonly TransactionRepository _transRepo;
         readonly LedgerRepository _ledgerRepo;
-        readonly AccountRepository _acctRepo;
+        readonly IDatabase _db;
 
-        public AjaxController()
+        public AjaxController(IDatabase db)
         {
+            _db = db;
             _transRepo = new TransactionRepository();
             _ledgerRepo = new LedgerRepository();
-            _acctRepo = new AccountRepository();
         }
 
         [HttpPost]
@@ -49,7 +52,7 @@ namespace Ledger.Controllers
         {
             if (ModelState.IsValid)
             {
-                _acctRepo.CreateAccount(acct);
+                _db.Execute(new CreateAccountCommand(acct));
                 return new HttpStatusCodeResult(HttpStatusCode.Created, "it worked");
             }
             return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
@@ -112,8 +115,8 @@ namespace Ledger.Controllers
         [HttpGet]
         public PartialViewResult GetAccountEditRow(int id)
         {
-            var model = _acctRepo.GetAccount(id);
-            return PartialView(model);
+            var acct = _db.Execute(new GetAccountByIdQuery(id));
+            return PartialView(acct);
         }
 
         [HttpGet]
@@ -144,8 +147,8 @@ namespace Ledger.Controllers
         [HttpGet]
         public PartialViewResult GetAccountRow(int id)
         {
-            var model = _acctRepo.GetAccount(id);
-            return PartialView(model);
+            var acct = _db.Execute(new GetAccountByIdQuery(id));
+            return PartialView(acct);
         }
 
         [HttpPost]
@@ -189,10 +192,10 @@ namespace Ledger.Controllers
             if (!ModelState.IsValid || account.Id <= 0)
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Errors");
 
-            _acctRepo.UpdateAccount(account);
+            _db.Execute(new UpdateAccountCommand(account));
 
-            var model = _acctRepo.GetAccount(account.Id);
-            return PartialView("GetAccountRow", model);
+            var acct = _db.Execute(new GetAccountByIdQuery(account.Id));
+            return PartialView("GetAccountRow", acct);
         }
     }
 }
