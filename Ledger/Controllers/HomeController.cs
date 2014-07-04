@@ -1,31 +1,32 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using Ledger.Models.Repositories;
+using Ledger.Models;
+using Ledger.Models.CommandQuery.Accounts;
+using Ledger.Models.CommandQuery.Ledgers;
+using Ledger.Models.CommandQuery.Transactions;
 using Ledger.Models.ViewModels;
 
 namespace Ledger.Controllers
 {
     public class HomeController : Controller
     {
-        readonly TransactionRepository _transRepo;
-        readonly LedgerRepository _ledgerRepo;
+        readonly IDatabase _db;
 
-        public HomeController()
+        public HomeController(IDatabase db)
         {
-            _transRepo = new TransactionRepository();
-            _ledgerRepo = new LedgerRepository();
+            _db = db;
         }
 
         public ViewResult Index(string q)
         {
             var model = new RecentTransactionsViewModel();
             if (string.IsNullOrEmpty(q))
-                model.Transactions = _transRepo.GetRecentReconciledTransations(100);
+                model.Transactions = _db.Execute(new GetRecentReconciledTransactionsQuery(100));
             else
-                model.Transactions = _transRepo.GetTransactionsSearch(q);
+                model.Transactions = _db.Execute(new GetTransactionsBySearchQuery(q));
             model.SearchTerm = q;
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
+            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
             return View(model);
         }
 
@@ -33,7 +34,7 @@ namespace Ledger.Controllers
         public PartialViewResult Nav()
         {
             var model = new NavViewModel();
-            model.Ledgers = _transRepo.GetAllLedgers().Where(l => l.IsActive).ToList();
+            model.Ledgers = _db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive).ToList();
             var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
             var controller = ControllerContext.ParentActionViewContext.RouteData.Values["controller"]  as string ?? "Home";
             if (action == "Unreconciled")
@@ -52,11 +53,11 @@ namespace Ledger.Controllers
         public ViewResult Unreconciled(int id)
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _transRepo.GetUnreconciled(id);
-            model.CurrentBalance = _transRepo.GetCurrentBalance(id);
-            model.ActualBalance = _transRepo.GetActualBalance(id);
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc", id);
-            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
+            model.Transactions = _db.Execute(new GetUnreconciledTransactionsForLedgerQuery(id));
+            model.CurrentBalance = _db.Execute(new GetCurrentBalanceForLedgerQuery(id));
+            model.ActualBalance = _db.Execute(new GetActualBalanceForLedgerQuery(id));
+            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
             model.Ledger = id;
             return View(model);
         } 
@@ -64,9 +65,9 @@ namespace Ledger.Controllers
         public ViewResult BillsDue()
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _transRepo.GetBillsDue();
-            model.LedgerList = new SelectList(_transRepo.GetAllLedgers().Where(l => l.IsActive), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_transRepo.GetAllAccounts(), "Id", "Desc");
+            model.Transactions = _db.Execute(new GetBillsDueQuery());
+            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
             return View(model);
         }
     }

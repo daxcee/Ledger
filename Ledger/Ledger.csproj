@@ -158,18 +158,33 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Database.cs" />
-    <Compile Include="Models\CommandQuery\Account\GetAccountByIdQuery.cs" />
+    <Compile Include="Models\CommandQuery\Accounts\GetAccountByIdQuery.cs" />
     <Compile Include="Models\ICommand.cs" />
     <Compile Include="Models\IDatabase.cs" />
     <Compile Include="Models\IQuery.cs" />
-    <Compile Include="Models\CommandQuery\Account\UpdateAccountCommand.cs" />
+    <Compile Include="Models\CommandQuery\Accounts\UpdateAccountCommand.cs" />
     <Compile Include="Models\Entities\Account.cs" />
     <Compile Include="Models\Entities\LedgerEntity.cs" />
-    <Compile Include="Models\CommandQuery\Account\CreateAccountCommand.cs" />
-    <Compile Include="Models\CommandQuery\Account\GetAllAccountsQuery.cs" />
-    <Compile Include="Models\Repositories\LedgerRepository.cs" />
-    <Compile Include="Models\Repositories\TransactionRepository.cs" />
+    <Compile Include="Models\CommandQuery\Accounts\CreateAccountCommand.cs" />
+    <Compile Include="Models\CommandQuery\Accounts\GetAllAccountsQuery.cs" />
+    <Compile Include="Models\CommandQuery\Ledgers\GetAllLedgersQuery.cs" />
+    <Compile Include="Models\CommandQuery\Ledgers\GetLedgerByIdQuery.cs" />
+    <Compile Include="Models\CommandQuery\Ledgers\CreateLedgerCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\CreateTransactionCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetActualBalanceForLedgerQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetCurrentBalanceForLedgerQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetUnreconciledTransactionsForLedgerQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\MarkTransactionReconciledCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\DeleteTransactionCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetBillsDueQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetRecentReconciledTransactionsQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetTransactionByIdQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\MarkBillPaidCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetTransactionsBySearchQuery.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\GetAllReconciledByFilter.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
+    <Compile Include="Models\CommandQuery\Ledgers\UpdateLedgerCommand.cs" />
+    <Compile Include="Models\CommandQuery\Transactions\UpdateTransactionCommand.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
     <Compile Include="Models\ViewModels\ImportViewModel.cs" />
     <Compile Include="Models\ViewModels\MonthlyReportView.cs" />
@@ -207,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

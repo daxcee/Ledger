@@ -1,13 +1,14 @@
 ﻿using System.Data;
 using Dapper;
+using Ledger.Models.Entities;
 
-namespace Ledger.Models.CommandQuery.Account
+namespace Ledger.Models.CommandQuery.Accounts
 {
     public class CreateAccountCommand : ICommand
     {
-        readonly Entities.Account acct;
+        readonly Account acct;
 
-        public CreateAccountCommand(Entities.Account acct)
+        public CreateAccountCommand(Account acct)
         {
             this.acct = acct;
         }

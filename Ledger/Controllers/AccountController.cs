@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using Ledger.Models;
-using Ledger.Models.CommandQuery;
-using Ledger.Models.CommandQuery.Account;
+using Ledger.Models.CommandQuery.Accounts;
 using Ledger.Models.ViewModels;
 
 namespace Ledger.Controllers

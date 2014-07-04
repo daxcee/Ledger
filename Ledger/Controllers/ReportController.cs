@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Ledger.Models.Repositories;
+using Ledger.Models;
+using Ledger.Models.CommandQuery.Accounts;
+using Ledger.Models.CommandQuery.Ledgers;
+using Ledger.Models.CommandQuery.Transactions;
 using Ledger.Models.ViewModels;
 
 namespace Ledger.Controllers
 {
     public class ReportController : Controller
     {
-        readonly TransactionRepository _transRepo;
+        readonly IDatabase _db;
 
-        public ReportController()
+        public ReportController(IDatabase db)
         {
-            _transRepo = new TransactionRepository();
+            _db = db;
         }
 
         public ViewResult Monthly()
@@ -20,18 +23,18 @@ namespace Ledger.Controllers
             var model = new MonthlyReportView();
             model.Month = DateTime.Now.AddMonths(-1).Month;
             model.Year = DateTime.Now.AddMonths(-1).Year;
-            model.Ledgers = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc");
+            model.Ledgers = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
             return View(model);
         }
 
         [HttpPost]
-        public ViewResult Monthly(MonthlyReportView args)
+        public ViewResult Monthly(MonthlyReportView filter)
         {
             var results = new MonthlyReportView();
-            var transactions = _transRepo.GetAllReconciled(args);
+            var transactions = _db.Execute(new GetAllReconciledByFilter(filter));
 
-            results.Ledgers = new SelectList(_transRepo.GetAllLedgers(), "Ledger", "LedgerDesc");
-            results.Accounts = _transRepo.GetAllAccounts().OrderBy(a => a.Desc).ThenBy(a => a.Category).ToList();
+            results.Ledgers = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
+            results.Accounts = _db.Execute(new GetAllAccountsQuery()).OrderBy(a => a.Desc).ThenBy(a => a.Category).ToList();
             results.Transactions = transactions.OrderBy(t => t.Account).ThenBy(t => t.DateReconciled).ToList();
             return View(results);
         }
