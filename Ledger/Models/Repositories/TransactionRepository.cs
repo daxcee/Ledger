@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Linq;
 using Dapper;
 using Ledger.Models.Entities;
+using Ledger.Models.ViewModels;
 
 namespace Ledger.Models.Repositories
 {
@@ -149,6 +150,17 @@ namespace Ledger.Models.Repositories
                         AND ((desc LIKE @searchTerm) OR (amount LIKE @searchTerm))
                         ORDER BY datereconciled DESC";
             return _connection.Query<Transaction>(sql, new { searchTerm = "%" + searchTerm + "%" }).ToList();
+        }
+
+        public List<Transaction> GetAllReconciled(MonthlyReportView view)
+        {
+            var sql = @"SELECT id, desc, amount, datedue, datepayed, datereconciled, account, ledger
+                        FROM transactions
+                        WHERE datereconciled IS NOT null
+                        AND (strftime('%m', datereconciled)+0) = @Month
+                        AND (strftime('%Y', datereconciled)+0) = @Year
+                        AND ledger = @Ledger";
+            return _connection.Query<Transaction>(sql, view).ToList();
         }
     }
 }

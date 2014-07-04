@@ -19,6 +19,12 @@
         <li@(Model.SelectedNav == "BillsDue" ? " class=active" : "")>@Html.ActionLink("Bills Due", "BillsDue", "Home")</li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Monthly", "Monthly", "Report")</li>
+            </ul>
+        </li>
         <li class="dropdown@(Model.SelectedNav == "Admin" ? " active" : "")">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
             <ul class="dropdown-menu">

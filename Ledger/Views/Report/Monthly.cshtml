@@ -1,0 +1,79 @@
+﻿@model Ledger.Models.ViewModels.MonthlyReportView
+
+<h2>Monthly Report</h2>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Report parameters
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.LabelFor(x => x.Month)
+                @Html.DropDownListFor(x => x.Month, Model.Months)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Year)
+                @Html.DropDownListFor(x => x.Year, Model.Years)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Ledger)
+                @Html.DropDownListFor(x => x.Ledger, Model.Ledgers)
+            </div>
+            <input type="submit" value="Submit" class="btn btn-default" />
+        }
+    </div>
+</div>
+
+@if (Model.Transactions != null)
+{
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Desc</th>
+            <th>Date Paid</th>
+            <th>Date Reconciled</th>
+            <th>Amount</th>
+            <th>Days</th>
+        </tr>
+        <tr>
+            <td colspan="6">&nbsp;</td>
+        </tr>
+        @foreach (var acct in Model.Accounts)
+        {
+            var acctTrans = Model.Transactions.Where(t => t.Account == acct.Id).ToList();
+            if (!acctTrans.Any())
+            {
+                continue;
+            }
+            <tr>
+                <th colspan="6">@acct.Desc</th>
+            </tr>
+            foreach (var trans in acctTrans)
+            {
+                <tr>
+                    <td>@trans.Id</td>
+                    <td>@trans.Desc</td>
+                    <td>@trans.DatePayed.Value.ToString("M/dd/yyyy")</td>
+                    <td>@trans.DateReconciled.Value.ToString("M/dd/yyyy")</td>
+                    <td>@trans.Amount.ToString("C")</td>
+                    <td>@( (trans.DatePayed.Value - @trans.DateReconciled.Value).Days)</td>
+                </tr>
+            }
+            <tr>
+                <th colspan="4">Subtotal</th>
+                <th>@acctTrans.Sum(a => a.Amount).ToString("C")</th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <td colspan="6">&nbsp;</td>
+            </tr>
+        }
+        <tr>
+            <th colspan="4">Total</th>
+            <th>@Model.Transactions.Sum(t => t.Amount)</th>
+            <th>&nbsp;</th>
+        </tr>
+    </table>
+}
