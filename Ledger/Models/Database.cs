@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using Ledger.Models.CommandQuery;
 
 namespace Ledger.Models
 {
@@ -12,7 +11,7 @@ namespace Ledger.Models
             this._db = db;
         }
 
-        public T Execute<T>(IQuery<T> query)
+        public T Query<T>(IQuery<T> query)
         {
             return query.Execute(_db);
         }

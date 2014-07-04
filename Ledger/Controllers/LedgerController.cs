@@ -17,7 +17,7 @@ namespace Ledger.Controllers
         public ViewResult Index()
         {
             var model = new LedgersViewModel();
-            model.Ledgers = _db.Execute(new GetAllLedgersQuery());
+            model.Ledgers = _db.Query(new GetAllLedgersQuery());
             return View(model);
         }
     }

@@ -21,12 +21,12 @@ namespace Ledger.Controllers
         {
             var model = new RecentTransactionsViewModel();
             if (string.IsNullOrEmpty(q))
-                model.Transactions = _db.Execute(new GetRecentReconciledTransactionsQuery(100));
+                model.Transactions = _db.Query(new GetRecentReconciledTransactionsQuery(100));
             else
-                model.Transactions = _db.Execute(new GetTransactionsBySearchQuery(q));
+                model.Transactions = _db.Query(new GetTransactionsBySearchQuery(q));
             model.SearchTerm = q;
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             return View(model);
         }
 
@@ -34,7 +34,7 @@ namespace Ledger.Controllers
         public PartialViewResult Nav()
         {
             var model = new NavViewModel();
-            model.Ledgers = _db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive).ToList();
+            model.Ledgers = _db.Query(new GetAllLedgersQuery()).Where(l => l.IsActive).ToList();
             var action = ControllerContext.ParentActionViewContext.RouteData.Values["action"]  as string ?? "Index";
             var controller = ControllerContext.ParentActionViewContext.RouteData.Values["controller"]  as string ?? "Home";
             if (action == "Unreconciled")
@@ -53,11 +53,11 @@ namespace Ledger.Controllers
         public ViewResult Unreconciled(int id)
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _db.Execute(new GetUnreconciledTransactionsForLedgerQuery(id));
-            model.CurrentBalance = _db.Execute(new GetCurrentBalanceForLedgerQuery(id));
-            model.ActualBalance = _db.Execute(new GetActualBalanceForLedgerQuery(id));
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.Transactions = _db.Query(new GetUnreconciledTransactionsForLedgerQuery(id));
+            model.CurrentBalance = _db.Query(new GetCurrentBalanceForLedgerQuery(id));
+            model.ActualBalance = _db.Query(new GetActualBalanceForLedgerQuery(id));
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             model.Ledger = id;
             return View(model);
         } 
@@ -65,9 +65,9 @@ namespace Ledger.Controllers
         public ViewResult BillsDue()
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _db.Execute(new GetBillsDueQuery());
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.Transactions = _db.Query(new GetBillsDueQuery());
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()).Where(l => l.IsActive), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             return View(model);
         }
     }

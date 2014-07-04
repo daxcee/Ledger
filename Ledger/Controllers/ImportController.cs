@@ -22,8 +22,8 @@ namespace Ledger.Controllers
             var model = new ImportViewModel();
             model.BaseUrl = ConfigurationManager.AppSettings["PublicServiceBaseUrl"];
             model.Token = ConfigurationManager.AppSettings["PublicServiceToken"];
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()).Where(l => l.IsActive), "Ledger", "LedgerDesc");
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             return View(model);
         }
     }

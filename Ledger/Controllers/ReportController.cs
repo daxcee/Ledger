@@ -23,7 +23,7 @@ namespace Ledger.Controllers
             var model = new MonthlyReportView();
             model.Month = DateTime.Now.AddMonths(-1).Month;
             model.Year = DateTime.Now.AddMonths(-1).Year;
-            model.Ledgers = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
+            model.Ledgers = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
             return View(model);
         }
 
@@ -31,10 +31,10 @@ namespace Ledger.Controllers
         public ViewResult Monthly(MonthlyReportView filter)
         {
             var results = new MonthlyReportView();
-            var transactions = _db.Execute(new GetAllReconciledByFilter(filter));
+            var transactions = _db.Query(new GetAllReconciledByFilter(filter));
 
-            results.Ledgers = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
-            results.Accounts = _db.Execute(new GetAllAccountsQuery()).OrderBy(a => a.Desc).ThenBy(a => a.Category).ToList();
+            results.Ledgers = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
+            results.Accounts = _db.Query(new GetAllAccountsQuery()).OrderBy(a => a.Desc).ThenBy(a => a.Category).ToList();
             results.Transactions = transactions.OrderBy(t => t.Account).ThenBy(t => t.DateReconciled).ToList();
             return View(results);
         }

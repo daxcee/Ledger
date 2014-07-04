@@ -75,7 +75,7 @@ namespace Ledger.Controllers
         [HttpGet]
         public JsonResult GetCurrentBalance(int ledger)
         {
-            return Json(new { CurrentBalance = _db.Execute(new GetCurrentBalanceForLedgerQuery(ledger)) }, JsonRequestBehavior.AllowGet);
+            return Json(new { CurrentBalance = _db.Query(new GetCurrentBalanceForLedgerQuery(ledger)) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -91,27 +91,27 @@ namespace Ledger.Controllers
         public PartialViewResult GetEditRow(int id)
         {
             var model = new TransactionEditViewModel();
-            model.Transaction = _db.Execute(new GetTransactionByIdQuery(id));
+            model.Transaction = _db.Query(new GetTransactionByIdQuery(id));
             
             // list all active ledgers AND the transactions current ledger (in case it's not active)
-            var ledgers = _db.Execute(new GetAllLedgersQuery()).Where(l => l.IsActive || l.Ledger == model.Transaction.Ledger);
+            var ledgers = _db.Query(new GetAllLedgersQuery()).Where(l => l.IsActive || l.Ledger == model.Transaction.Ledger);
 
             model.LedgerList = new SelectList(ledgers, "Ledger", "LedgerDesc", model.Transaction.Ledger);
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc", model.Transaction.Account);
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc", model.Transaction.Account);
             return PartialView(model);
         } 
         
         [HttpGet]
         public PartialViewResult GetLedgerEditRow(int id)
         {
-            var ledger = _db.Execute(new GetLedgerByIdQuery(id));
+            var ledger = _db.Query(new GetLedgerByIdQuery(id));
             return PartialView(ledger);
         }
         
         [HttpGet]
         public PartialViewResult GetAccountEditRow(int id)
         {
-            var acct = _db.Execute(new GetAccountByIdQuery(id));
+            var acct = _db.Query(new GetAccountByIdQuery(id));
             return PartialView(acct);
         }
 
@@ -120,10 +120,10 @@ namespace Ledger.Controllers
         {
             var model = new UnreconciledViewModel();
 
-            var t = _db.Execute(new GetTransactionByIdQuery(id));
+            var t = _db.Query(new GetTransactionByIdQuery(id));
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             model.Ledger = id;
 
             if (t.IsABillDue())
@@ -136,14 +136,14 @@ namespace Ledger.Controllers
         [HttpGet]
         public PartialViewResult GetLedgerRow(int id)
         {
-            var ledger = _db.Execute(new GetLedgerByIdQuery(id));
+            var ledger = _db.Query(new GetLedgerByIdQuery(id));
             return PartialView(ledger);
         }
 
         [HttpGet]
         public PartialViewResult GetAccountRow(int id)
         {
-            var acct = _db.Execute(new GetAccountByIdQuery(id));
+            var acct = _db.Query(new GetAccountByIdQuery(id));
             return PartialView(acct);
         }
 
@@ -155,11 +155,11 @@ namespace Ledger.Controllers
 
             _db.Execute(new UpdateTransactionCommand(transaction));
 
-            var t = _db.Execute(new GetTransactionByIdQuery(transaction.Id));
+            var t = _db.Query(new GetTransactionByIdQuery(transaction.Id));
             var model = new UnreconciledViewModel();
             model.Transactions = new List<Transaction> { t };
-            model.LedgerList = new SelectList(_db.Execute(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", t.Id);
-            model.AccountsList = new SelectList(_db.Execute(new GetAllAccountsQuery()), "Id", "Desc");
+            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", t.Id);
+            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
             model.Ledger = t.Id;
 
             if (t.IsABillDue())
@@ -178,7 +178,7 @@ namespace Ledger.Controllers
 
             _db.Execute(new UpdateLedgerCommand(ledgerIn));
 
-            var model = _db.Execute(new GetLedgerByIdQuery(ledgerIn.Ledger));
+            var model = _db.Query(new GetLedgerByIdQuery(ledgerIn.Ledger));
             return PartialView("GetLedgerRow", model);
         }
         
@@ -190,7 +190,7 @@ namespace Ledger.Controllers
 
             _db.Execute(new UpdateAccountCommand(account));
 
-            var acct = _db.Execute(new GetAccountByIdQuery(account.Id));
+            var acct = _db.Query(new GetAccountByIdQuery(account.Id));
             return PartialView("GetAccountRow", acct);
         }
     }
