@@ -1,22 +1,23 @@
 ﻿using System.Web.Mvc;
-using Ledger.Models.Repositories;
+using Ledger.Models;
+using Ledger.Models.CommandQuery.Ledgers;
 using Ledger.Models.ViewModels;
 
 namespace Ledger.Controllers
 {
     public class LedgerController : Controller
     {
-        readonly LedgerRepository _ledgerRepo;
+        readonly IDatabase _db;
 
-        public LedgerController()
+        public LedgerController(IDatabase db)
         {
-            _ledgerRepo = new LedgerRepository();
+            _db = db;
         }
 
         public ViewResult Index()
         {
             var model = new LedgersViewModel();
-            model.Ledgers = _ledgerRepo.GetAllLedgers();
+            model.Ledgers = _db.Query(new GetAllLedgersQuery());
             return View(model);
         }
     }
