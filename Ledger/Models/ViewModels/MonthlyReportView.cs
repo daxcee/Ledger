@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using Ledger.Models.Entities;
 
@@ -12,7 +13,6 @@ namespace Ledger.Models.ViewModels
         public int? Month { get; set; }
         [Required]
         public int? Year { get; set; }
-        [Required]
         public long? Ledger { get; set; }
 
 
@@ -44,5 +44,10 @@ namespace Ledger.Models.ViewModels
 
         public List<Account> Accounts { get; set; }
         public SelectList Ledgers { get; set; }
+
+        public string GetLedgerName(long ledgerId)
+        {
+            return Ledgers.Single(l => l.Value == ledgerId.ToString()).Text;
+        }
     }
 }

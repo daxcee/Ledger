@@ -22,8 +22,12 @@ namespace Ledger.Models.CommandQuery.Transactions
                         FROM transactions
                         WHERE datereconciled IS NOT null
                         AND (strftime('%m', datereconciled)+0) = @Month
-                        AND (strftime('%Y', datereconciled)+0) = @Year
-                        AND ledger = @Ledger";
+                        AND (strftime('%Y', datereconciled)+0) = @Year";
+
+            if (view.Ledger.HasValue)
+            {
+                sql += " AND ledger = @Ledger";
+            }
             return db.Query<Transaction>(sql, view).ToList();
         }
     }

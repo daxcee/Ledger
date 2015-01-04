@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(x => x.Ledger)
-                @Html.DropDownListFor(x => x.Ledger, Model.Ledgers)
+                @Html.DropDownListFor(x => x.Ledger, Model.Ledgers, "All")
             </div>
             <input type="submit" value="Submit" class="btn btn-default" />
         }
@@ -36,9 +36,10 @@
             <th>Date Reconciled</th>
             <th>Amount</th>
             <th>Days</th>
+            <th>Ledger</th>
         </tr>
         <tr>
-            <td colspan="6">&nbsp;</td>
+            <td colspan="7">&nbsp;</td>
         </tr>
         @foreach (var acct in Model.Accounts)
         {
@@ -48,7 +49,7 @@
                 continue;
             }
             <tr>
-                <th colspan="6">@acct.Desc</th>
+                <th colspan="7">@acct.Desc</th>
             </tr>
             foreach (var trans in acctTrans)
             {
@@ -59,21 +60,22 @@
                     <td>@trans.DateReconciled.Value.ToString("M/dd/yyyy")</td>
                     <td>@trans.Amount.ToString("C")</td>
                     <td>@( (trans.DatePayed.Value - @trans.DateReconciled.Value).Days)</td>
+                    <td>@Model.GetLedgerName(@trans.Ledger)</td>
                 </tr>
             }
             <tr>
                 <th colspan="4">Subtotal</th>
                 <th>@acctTrans.Sum(a => a.Amount).ToString("C")</th>
-                <th>&nbsp;</th>
+                <th colspan="2">&nbsp;</th>
             </tr>
             <tr>
-                <td colspan="6">&nbsp;</td>
+                <td colspan="7">&nbsp;</td>
             </tr>
         }
         <tr>
             <th colspan="4">Total</th>
             <th>@Model.Transactions.Sum(t => t.Amount)</th>
-            <th>&nbsp;</th>
+            <th colspan="2">&nbsp;</th>
         </tr>
     </table>
 }
