@@ -53,7 +53,7 @@ namespace Ledger.Controllers
         public ViewResult Unreconciled(int id)
         {
             var model = new UnreconciledViewModel();
-            model.Transactions = _db.Query(new GetUnreconciledTransactionsForLedgerQuery(id));
+            model.Transactions = _db.Query(new GetUnreconciledTransactionsForLedgerQuery(id)).OrderBy(t => t.Amount).ToList();
             model.CurrentBalance = _db.Query(new GetCurrentBalanceForLedgerQuery(id));
             model.ActualBalance = _db.Query(new GetActualBalanceForLedgerQuery(id));
             model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc", id);
