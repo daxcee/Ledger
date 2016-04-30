@@ -17,16 +17,10 @@ namespace Ledger.Controllers
             _db = db;
         }
 
-        public ViewResult Index(string q)
+        public ViewResult Index(IndexFilterView view)
         {
-            var model = new RecentTransactionsViewModel();
-            if (string.IsNullOrEmpty(q))
-                model.Transactions = _db.Query(new GetRecentReconciledTransactionsQuery(100));
-            else
-                model.Transactions = _db.Query(new GetTransactionsBySearchQuery(q));
-            model.SearchTerm = q;
-            model.LedgerList = new SelectList(_db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
-            model.AccountsList = new SelectList(_db.Query(new GetAllAccountsQuery()), "Id", "Desc");
+            var model = new RecentTransactionsViewModel(view, _db);
+
             return View(model);
         }
 

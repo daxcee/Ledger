@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -180,13 +181,13 @@
     <Compile Include="Models\CommandQuery\Transactions\GetRecentReconciledTransactionsQuery.cs" />
     <Compile Include="Models\CommandQuery\Transactions\GetTransactionByIdQuery.cs" />
     <Compile Include="Models\CommandQuery\Transactions\MarkBillPaidCommand.cs" />
-    <Compile Include="Models\CommandQuery\Transactions\GetTransactionsBySearchQuery.cs" />
     <Compile Include="Models\CommandQuery\Transactions\GetAllReconciledByFilter.cs" />
     <Compile Include="Models\Entities\Transaction.cs" />
     <Compile Include="Models\CommandQuery\Ledgers\UpdateLedgerCommand.cs" />
     <Compile Include="Models\CommandQuery\Transactions\UpdateTransactionCommand.cs" />
     <Compile Include="Models\ViewModels\AccountsViewModel.cs" />
     <Compile Include="Models\ViewModels\ImportViewModel.cs" />
+    <Compile Include="Models\ViewModels\IndexFilterView.cs" />
     <Compile Include="Models\ViewModels\MonthlyReportView.cs" />
     <Compile Include="Models\ViewModels\NavViewModel.cs" />
     <Compile Include="Models\ViewModels\LedgersViewModel.cs" />
