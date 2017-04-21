@@ -21,6 +21,7 @@ namespace Ledger.Models.ViewModels
 
             LedgerList = new SelectList(db.Query(new GetAllLedgersQuery()), "Ledger", "LedgerDesc");
             AccountsList = new SelectList(db.Query(new GetAllAccountsQuery()), "Id", "Desc");
+            FilteredLedger = view.Ledger;
         }
 
         public List<Transaction> Transactions { get; private set; }
@@ -31,5 +32,6 @@ namespace Ledger.Models.ViewModels
         public string SearchTerm { get; private set; }
         public string StartDateInput { get; private set; }
         public string EndDateInput { get; private set; }
+        public int? FilteredLedger { get; private set;}
     }
 }

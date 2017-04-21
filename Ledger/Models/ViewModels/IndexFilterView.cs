@@ -8,5 +8,6 @@ namespace Ledger.Models.ViewModels
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? Limit { get; set; }
+        public int? Ledger { get; set; }
     }
 }

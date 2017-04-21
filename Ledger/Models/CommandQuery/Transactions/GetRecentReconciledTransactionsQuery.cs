@@ -24,10 +24,17 @@ namespace Ledger.Models.CommandQuery.Transactions
                         AND ((desc LIKE @searchTerm) OR (amount LIKE @searchTerm))
                         AND (@startDate IS NULL OR datereconciled >= @startDate)
                         AND (@endDate IS NULL OR datereconciled <= @endDate)
+                        AND (@ledger IS NULL OR ledger = @ledger)
                         ORDER BY datereconciled DESC
                         LIMIT 100";
 
-            return db.Query<Transaction>(sql, new { searchTerm = "%" + filter.Query + "%", startDate = filter.StartDate, endDate = filter.EndDate }).ToList();
+            return db.Query<Transaction>(sql, new
+            {
+                searchTerm = "%" + filter.Query + "%",
+                startDate = filter.StartDate,
+                endDate = filter.EndDate,
+                ledger = filter.Ledger
+            }).ToList();
         }
     }
 }
